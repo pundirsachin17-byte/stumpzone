@@ -348,7 +348,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 20p
     <div class="card-wrap fade-up d1" id="table">
       <div class="section-hd">
         <h2 class="section-title"><span>📊</span> Points Table</h2>
-        <span class="section-more">After Match 12 · Apr 7</span>
+        <span class="section-more">After Latest Matches · Apr 7</span>
       </div>
       <div class="card">
         <table class="pt">
@@ -499,9 +499,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:40px 20p
 //  2. Paste it below — that's the only thing you ever change
 // ─────────────────────────────────────────────────────────────
 
-const CRICKET_API_KEY = 'YOUR_FREE_KEY_HERE'; // ← paste once from cricketdata.org
-const CACHE_TTL_MS    = 10 * 60 * 1000;       // cache for 10 min (saves API calls)
-const IPL_SERIES_ID   = '';                    // auto-detected on first load, then cached
+const CRICKET_API_KEY = 'fdb98ab9-2df4-4bae-b02f-6eaa8da7d220';
+const CACHE_TTL_MS    = 10 * 60 * 1000;
+const IPL_SERIES_ID   = '';
 
 const TEAMS = {
   RR:  {name:'Rajasthan Royals',           color:'#2c3fa0'},
@@ -519,11 +519,16 @@ const TEAMS = {
 // Fallback data — shown instantly while API loads
 const FALLBACK = {
   points:[
-    {abbr:'RR', m:3,w:3,l:0,pts:6,nrr:'+2.845'},{abbr:'RCB',m:3,w:3,l:0,pts:6,nrr:'+1.620'},
-    {abbr:'PBKS',m:3,w:2,l:0,pts:5,nrr:'+0.380'},{abbr:'LSG',m:3,w:2,l:1,pts:4,nrr:'+0.710'},
-    {abbr:'DC', m:2,w:2,l:0,pts:4,nrr:'+0.542'},{abbr:'MI', m:3,w:2,l:1,pts:4,nrr:'+0.210'},
-    {abbr:'GT', m:2,w:1,l:1,pts:2,nrr:'-0.140'},{abbr:'KKR',m:3,w:0,l:2,pts:1,nrr:'-0.660'},
-    {abbr:'SRH',m:3,w:0,l:3,pts:0,nrr:'-1.210'},{abbr:'CSK',m:3,w:0,l:3,pts:0,nrr:'-2.950'},
+    {abbr:'PBKS',m:3,w:2,l:0,pts:5, nrr:'+0.637'},
+    {abbr:'RCB', m:2,w:2,l:0,pts:4, nrr:'+2.501'},
+    {abbr:'RR',  m:2,w:2,l:0,pts:4, nrr:'+2.233'},
+    {abbr:'DC',  m:2,w:2,l:0,pts:4, nrr:'+1.170'},
+    {abbr:'SRH', m:3,w:1,l:2,pts:2, nrr:'+0.275'},
+    {abbr:'MI',  m:2,w:1,l:1,pts:2, nrr:'-0.206'},
+    {abbr:'LSG', m:2,w:1,l:1,pts:2, nrr:'-0.542'},
+    {abbr:'KKR', m:3,w:0,l:2,pts:1, nrr:'-1.964'},
+    {abbr:'GT',  m:2,w:0,l:2,pts:0, nrr:'-0.424'},
+    {abbr:'CSK', m:3,w:0,l:3,pts:0, nrr:'-2.517'},
   ],
   results:[
     {m:12,date:'Apr 7', t1:'KKR',s1:'25/2 (3.4)',  t2:'PBKS',s2:'—',          winner:'NR', sum:'No Result — Abandoned due to rain. KKR 25-2 after 3.4 overs.'},
@@ -542,11 +547,13 @@ const FALLBACK = {
   today:{num:13,t1:'RR',t1full:'Rajasthan Royals',t2:'MI',t2full:'Mumbai Indians',
          venue:'Sawai Mansingh Stadium, Jaipur',date:'April 7, 2026',time:'7:30 PM IST'},
   ticker:[
-    '🔥 TODAY M13: RR vs MI | Sawai Mansingh, Jaipur | 7:30 PM IST',
-    '🌧️ M12: KKR vs PBKS — No Result due to rain',
-    '🏏 M11: RCB beat CSK by 43 runs | RCB 250-3 vs CSK 207',
-    '📊 STANDINGS: RR & RCB joint top on 6 pts',
+    '📊 STANDINGS: PBKS lead on 5pts | RCB, RR, DC all on 4pts',
+    '🏏 SRH bounce back with win | SRH 2pts in 3 matches',
+    '🌧️ KKR vs PBKS — No Result (rain) | KKR on 1pt',
+    '🏏 RCB demolished CSK by 43 runs | RCB 250-3 vs CSK 207',
+    '⭐ Vaibhav Sooryavanshi stuns CSK with brilliant knock for RR',
     '🏆 Defending Champions: Royal Challengers Bengaluru (RCB)',
+    '💰 Cameron Green (KKR) — IPL record overseas buy at ₹25.20 Cr',
     '📅 IPL 2026 Final: May 31 · Bengaluru',
   ]
 };
@@ -565,12 +572,13 @@ function cacheGet(key) {
 }
 
 // ─── CRICKET API HELPERS ─────────────────────────────────────
-const BASE = 'https://api.cricketdata.org/api/v1';
+const BASE = 'https://api.cricapi.com/v1';
 
 async function apiGet(path) {
-  const res = await fetch(`${BASE}/${path}&apikey=${CRICKET_API_KEY}`);
+  const sep = path.includes('?') ? '&' : '?';
+  const res = await fetch(`${BASE}/${path}${sep}apikey=${CRICKET_API_KEY}`);
   const json = await res.json();
-  if (json.status !== 'success') throw new Error(json.reason || 'API error');
+  if (json.status !== 'success') throw new Error(json.reason || json.info || 'API error');
   return json.data;
 }
 
@@ -606,9 +614,9 @@ async function getIPLSeriesId() {
 async function fetchLiveScores() {
   const cached = cacheGet('live_scores');
   if (cached) { renderLiveMatches(cached); return; }
-  const all = await apiGet('cricScore?');
+  const all = await apiGet('currentMatches?offset=0');
   const ipl = (all||[]).filter(m =>
-    /indian premier league|ipl/i.test(m.series||m.t1||m.t2||'')
+    /indian premier league|ipl/i.test(m.series||m.name||m.t1||m.t2||'')
   );
   const data = ipl.length ? ipl : (all||[]).slice(0,4);
   cacheSet('live_scores', data);
@@ -623,9 +631,15 @@ function renderLiveMatches(matches) {
     return;
   }
   c.innerHTML = matches.map(m => {
-    const isLive = /live/i.test(m.ms||'');
-    const a1 = toAbbr(m.t1||''), a2 = toAbbr(m.t2||'');
+    // cricapi uses m.teams[] and m.score[] arrays
+    const teams = m.teams || [m.t1||'', m.t2||''];
+    const scores = m.score || [];
+    const a1 = toAbbr(teams[0]||''), a2 = toAbbr(teams[1]||'');
     const c1 = TEAMS[a1]?.color||'#888', c2 = TEAMS[a2]?.color||'#888';
+    const s1 = scores[0] ? `${scores[0].r}/${scores[0].w} (${scores[0].o})` : (m.t1s||'');
+    const s2 = scores[1] ? `${scores[1].r}/${scores[1].w} (${scores[1].o})` : (m.t2s||'');
+    const isLive = m.matchStarted && !m.matchEnded;
+    const status = m.status || '';
     return `<div class="res-item" style="${isLive?'border-left:3px solid var(--green);background:rgba(30,200,106,.03)':''}">
       <div style="min-width:42px;text-align:center;">
         ${isLive?'<div style="font-size:9px;font-family:Rajdhani,sans-serif;font-weight:700;color:var(--green);letter-spacing:1.5px;margin-bottom:3px;animation:blink 1.6s infinite;">LIVE</div>':''}
@@ -634,17 +648,19 @@ function renderLiveMatches(matches) {
       <div class="res-body">
         <div class="res-row">
           <span style="color:${c1};font-family:Rajdhani,sans-serif;font-weight:700;">${a1}</span>
-          <span style="font-family:'Bebas Neue',cursive;font-size:16px;">${m.t1s||''}</span>
+          ${s1?`<span style="font-family:'Bebas Neue',cursive;font-size:15px;">${s1}</span>`:''}
           <span class="res-vsep">vs</span>
           <span style="color:${c2};font-family:Rajdhani,sans-serif;font-weight:700;">${a2}</span>
-          <span style="font-family:'Bebas Neue',cursive;font-size:16px;">${m.t2s||''}</span>
+          ${s2?`<span style="font-family:'Bebas Neue',cursive;font-size:15px;">${s2}</span>`:''}
         </div>
-        <div class="res-sum">${m.status||m.ms||''}</div>
+        <div class="res-sum">${status}</div>
       </div>
     </div>`;
   }).join('');
-  // also update ticker with live data
-  const ticker = matches.map(m=>`🏏 ${toAbbr(m.t1||'')} ${m.t1s||''} vs ${toAbbr(m.t2||'')} ${m.t2s||''} · ${m.status||''}`);
+  const ticker = matches.map(m=>{
+    const teams=m.teams||[m.t1||'',m.t2||''];
+    return `🏏 ${toAbbr(teams[0])} vs ${toAbbr(teams[1])} · ${m.status||''}`;
+  });
   renderTicker([...ticker, ...FALLBACK.ticker]);
 }
 
@@ -653,23 +669,25 @@ async function fetchPointsTable() {
   const cached = cacheGet('points_table');
   if (cached) { renderTable(cached); return; }
   const seriesId = await getIPLSeriesId();
-  const raw = await apiGet(`series_points_table?seriesid=${seriesId}&`);
-  if (!raw || !raw.length) return;
-  const pts = raw.map(item => {
-    const name = item.teamInfo?.name || item.team || '';
-    const s = item.stats || {};
-    const nrr = parseFloat(s.nrr||0);
+  const raw = await apiGet(`series_points_table?id=${seriesId}`);
+  // cricapi returns {pointsTable:[{teamInfo:[...]}]} or flat array
+  const rows = raw?.pointsTable
+    ? raw.pointsTable.flatMap(g => g.teamInfo || [])
+    : (Array.isArray(raw) ? raw : []);
+  if (!rows.length) return;
+  const pts = rows.map(item => {
+    const name = item.teamName || item.teamInfo?.name || item.team || '';
+    const nrr = parseFloat(item.nrr || item.stats?.nrr || 0);
     return {
       abbr: toAbbr(name),
-      m:    parseInt(s.matchesPlayed||s.played||0),
-      w:    parseInt(s.win||s.wins||0),
-      l:    parseInt(s.loss||s.losses||0),
-      pts:  parseInt(s.pts||s.points||0),
+      m:    parseInt(item.matchesPlayed || item.stats?.matchesPlayed || 0),
+      w:    parseInt(item.wins  || item.win  || item.stats?.wins || 0),
+      l:    parseInt(item.losses|| item.loss || item.stats?.loss || 0),
+      pts:  parseInt(item.points|| item.pts  || item.stats?.pts  || 0),
       nrr:  (nrr >= 0 ? '+' : '') + nrr.toFixed(3),
     };
-  });
-  cacheSet('points_table', pts);
-  renderTable(pts);
+  }).filter(t => t.abbr && t.abbr.length >= 2);
+  if (pts.length >= 8) { cacheSet('points_table', pts); renderTable(pts); }
 }
 
 // ─── SCHEDULE & RESULTS ──────────────────────────────────────
@@ -677,9 +695,11 @@ async function fetchMatches() {
   const cached = cacheGet('matches');
   if (cached) { processMatches(cached); return; }
   const seriesId = await getIPLSeriesId();
-  const matches = await apiGet(`matches?seriesid=${seriesId}&`);
-  cacheSet('matches', matches);
-  processMatches(matches);
+  // cricapi: series_info returns matchList
+  const info = await apiGet(`series_info?id=${seriesId}`);
+  const matches = info?.matchList || info?.matchSchedule || info || [];
+  const list = Array.isArray(matches) ? matches : [];
+  if (list.length) { cacheSet('matches', list); processMatches(list); }
 }
 
 function processMatches(matches) {
@@ -911,7 +931,7 @@ renderTeams();
 initQuiz();
 
 // Step 2: fetch live data in background (free APIs, cached 10 min)
-if (CRICKET_API_KEY && CRICKET_API_KEY !== 'fdb98ab9-2df4-4bae-b02f-6eaa8da7d220') {
+if (CRICKET_API_KEY && CRICKET_API_KEY !== 'YOUR_FREE_KEY_HERE') {
   fetchLiveScores().catch(()=>{});
   setTimeout(()=>fetchPointsTable().catch(()=>{}), 800);
   setTimeout(()=>fetchMatches().catch(()=>{}), 1600);
