@@ -317,9 +317,9 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
     <a href="#page-table" onclick="goPage('table')">Table</a>
     <a href="#page-fixtures" onclick="goPage('fixtures')">Fixtures</a>
     <a href="#page-quiz" onclick="goPage('quiz')">Quiz</a>
-    <a href="#news">News</a>
-    <a href="#teams">Teams</a>
-    <a href="#faq">FAQ</a>
+    <a href="#page-news" onclick="goPage('news')">News</a>
+    <a href="#page-teams" onclick="goPage('teams')">Teams</a>
+    <a href="#page-faq" onclick="goPage('faq')">FAQ</a>
   </div>
   <div class="live-pill"><div class="ldot"></div>IPL LIVE</div>
 </nav>
@@ -424,12 +424,6 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       </div>
     </div>
 
-    <!-- TEAMS -->
-    <div id="teams">
-      <div class="sec-hd"><h2 class="sec-title"><span class="icon">🏆</span> IPL 2026 Teams</h2></div>
-      <div class="teams-grid" id="teams-grid"></div>
-    </div>
-
     <!-- SEO CONTENT -->
     <div class="seo-block">
       <h2>IPL 2026 — Complete Season Guide</h2>
@@ -442,18 +436,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       <p>Each win = <strong>2 points</strong>. No result/rain = <strong>1 point</strong>. Loss = <strong>0 points</strong>. The top 4 teams after 70 league matches qualify for playoffs. When teams are tied on points, <strong>Net Run Rate (NRR)</strong> is the tiebreaker.</p>
     </div>
 
-    <!-- FAQ -->
-    <div id="faq">
-      <div class="sec-hd"><h2 class="sec-title"><span class="icon">❓</span> IPL 2026 FAQs</h2></div>
-      <div class="card" id="faq-container"></div>
-    </div>
-
   </div>
 
   <!-- RIGHT COLUMN -->
   <div class="right">
 
-    <!-- QUIZ -->
+    <!-- QUIZ WIDGET -->
     <div class="card" id="quiz">
       <div style="padding:12px 14px 0;border-bottom:1px solid var(--border);margin-bottom:0;">
         <h2 class="sec-title" style="font-size:17px;padding-bottom:12px;"><span class="icon">🧠</span> IPL Trivia Quiz</h2>
@@ -479,20 +467,17 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       </div>
     </div>
 
-    <!-- NEWS -->
-    <div class="card" id="news">
+    <!-- NEWS TEASER — links to News page -->
+    <div class="card">
       <div style="padding:12px 14px;border-bottom:1px solid var(--border);">
         <h2 class="sec-title" style="font-size:17px;"><span class="icon">📰</span> Latest Cricket News</h2>
       </div>
-      <div class="news-loading" id="news-loading"><span class="spin"></span>Fetching latest cricket news...</div>
-      <div id="news-container">
-        <div class="news-item"><span class="news-tag">IPL 2026</span><div class="news-hl">PBKS lead IPL 2026 standings after thrilling season opener wins</div><div class="news-meta">Today · StumpZone</div></div>
-        <div class="news-item"><span class="news-tag">STAR BOY</span><div class="news-hl">Vaibhav Sooryavanshi's stunning knock lights up IPL 2026 for Rajasthan Royals</div><div class="news-meta">Today · RR</div></div>
-        <div class="news-item"><span class="news-tag">RCB</span><div class="news-hl">RCB demolish CSK by 43 runs — 250-3 in 20 overs in stunning batting display</div><div class="news-meta">Yesterday · Match Report</div></div>
-        <div class="news-item"><span class="news-tag">KKR</span><div class="news-hl">Cameron Green rolls arm in nets ahead of KKR's crucial fixture</div><div class="news-meta">Today · KKR</div></div>
+      <div id="news-teaser">
+        <div class="news-item"><span class="news-tag">IPL 2026</span><div class="news-hl">PBKS lead IPL 2026 standings after strong start</div><div class="news-meta">Today · StumpZone</div></div>
+        <div class="news-item"><span class="news-tag">RCB</span><div class="news-hl">RCB demolish CSK by 43 runs — 250-3 in stunning batting display</div><div class="news-meta">Yesterday · Match Report</div></div>
       </div>
       <div class="news-btn-wrap">
-        <button class="news-load-btn" id="news-btn" onclick="loadNews(true)">🔄 Refresh Latest News</button>
+        <button class="news-load-btn" onclick="goPage('news')">📰 Read All Cricket News →</button>
       </div>
     </div>
 
@@ -621,6 +606,109 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
 </div>
 
 <!-- ═══════════════════════════════════════════════
+     PAGE: NEWS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-news">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-tag">LATEST CRICKET NEWS</p>
+      <h1 class="page-title">Cricket <em>News</em></h1>
+      <p class="page-sub">Real-time IPL 2026 news — match results, player injuries, transfers, squad updates and more.</p>
+    </div>
+  </div>
+  <div class="page-body" style="max-width:800px;">
+    <button class="back-btn" onclick="goHome()">← Back to Home</button>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+        <h2 style="font-size:16px;">📰 IPL 2026 Latest News</h2>
+        <button class="btn" id="news-btn" onclick="loadNews(true)" style="font-size:11px;padding:5px 12px;">🔄 Refresh</button>
+      </div>
+      <div class="news-loading" id="news-loading"><span class="spin"></span>Fetching latest cricket news...</div>
+      <div id="news-container">
+        <div class="news-item"><span class="news-tag">IPL 2026</span><div class="news-hl">PBKS lead IPL 2026 standings after thrilling season opener wins</div><div class="news-meta">Today · StumpZone</div></div>
+        <div class="news-item"><span class="news-tag">🚑 INJURY</span><div class="news-hl" style="color:var(--red)">Check back for latest IPL 2026 injury updates</div><div class="news-meta">Live feed · Google News</div></div>
+        <div class="news-item"><span class="news-tag">RCB</span><div class="news-hl">RCB demolish CSK by 43 runs — 250-3 in 20 overs in stunning batting display</div><div class="news-meta">Yesterday · Match Report</div></div>
+        <div class="news-item"><span class="news-tag">⭐ STAR BOY</span><div class="news-hl">Vaibhav Sooryavanshi's stunning knock lights up IPL 2026 for Rajasthan Royals</div><div class="news-meta">Today · RR</div></div>
+        <div class="news-item"><span class="news-tag">KKR</span><div class="news-hl">Cameron Green rolls arm in nets ahead of KKR's crucial IPL 2026 fixture</div><div class="news-meta">Today · KKR</div></div>
+      </div>
+    </div>
+    <div class="seo-block">
+      <h2>IPL 2026 News Coverage</h2>
+      <p>StumpZone aggregates the latest IPL 2026 news from <strong>ESPNcricinfo, Cricbuzz, Times of India, Hindustan Times</strong> and other leading cricket publications — all in one place. News is refreshed every 30 minutes automatically.</p>
+      <h3>What We Cover</h3>
+      <p><strong>🚑 Injuries:</strong> Real-time updates when players are ruled out, returning from injury, or doubtful for upcoming matches. <strong>🔄 Transfers:</strong> Squad changes, replacements, and team announcements. <strong>🏏 Match News:</strong> Post-match reports, key performances and records. <strong>📋 Match Previews:</strong> Head-to-head stats, pitch reports and probable XIs.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: TEAMS
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-teams">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-tag">IPL 2026 · ALL 10 FRANCHISES</p>
+      <h1 class="page-title">IPL 2026 <em>Teams</em></h1>
+      <p class="page-sub">All 10 IPL 2026 franchises — squad info, home grounds and current standings.</p>
+    </div>
+  </div>
+  <div class="page-body">
+    <button class="back-btn" onclick="goHome()">← Back to Home</button>
+    <div class="teams-grid" style="margin-bottom:20px;" id="teams-grid-page"></div>
+    <div id="teams-detail-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:20px;"></div>
+    <div class="seo-block">
+      <h2>IPL 2026 Team Guide</h2>
+      <p>The <strong>2026 Indian Premier League</strong> features the same 10 franchises from 2025, but with significant changes across squads and captaincy. Here's the full team breakdown:</p>
+      <h3>Royal Challengers Bengaluru (RCB)</h3>
+      <p>Defending IPL 2026 champions. Home ground: M Chinnaswamy Stadium, Bengaluru and Shaheed Veer Narayan Singh Stadium, Raipur.</p>
+      <h3>Chennai Super Kings (CSK)</h3>
+      <p>Five-time champions now captained by <strong>Sanju Samson</strong>, who joined from Rajasthan Royals. Home: MA Chidambaram Stadium, Chennai.</p>
+      <h3>Mumbai Indians (MI)</h3>
+      <p>Five-time champions. One of the most successful IPL franchises. Home: Wankhede Stadium, Mumbai.</p>
+      <h3>Kolkata Knight Riders (KKR)</h3>
+      <p>Three-time champions who signed <strong>Cameron Green</strong> for a record ₹25.20 crore — the most expensive overseas player in IPL history. Home: Eden Gardens, Kolkata.</p>
+      <h3>Rajasthan Royals (RR)</h3>
+      <p>Powered by teenage sensation <strong>Vaibhav Sooryavanshi</strong> and now home to <strong>Ravindra Jadeja</strong> who joined from CSK. Home grounds: Sawai Mansingh Stadium (Jaipur) and Barsapara Stadium (Guwahati).</p>
+      <h3>Sunrisers Hyderabad (SRH)</h3>
+      <p>Known for aggressive batting and explosive openers. Home: Rajiv Gandhi International Stadium, Hyderabad.</p>
+      <h3>Punjab Kings (PBKS)</h3>
+      <p>Currently leading IPL 2026 standings. Led by <strong>Shreyas Iyer</strong>. Home: New Chandigarh and Dharamsala.</p>
+      <h3>Gujarat Titans (GT)</h3>
+      <p>Two-time finalist (2022 winners, 2023 runners-up). Home: Narendra Modi Stadium, Ahmedabad.</p>
+      <h3>Delhi Capitals (DC)</h3>
+      <p>Led by <strong>Axar Patel</strong>. Home: Arun Jaitley Stadium, Delhi and Dr. YS Rajasekhara Reddy ACA-VDCA Stadium, Visakhapatnam.</p>
+      <h3>Lucknow Super Giants (LSG)</h3>
+      <p>Franchise entered IPL in 2022. Home: BRSABV Ekana Cricket Stadium, Lucknow.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     PAGE: FAQ
+═══════════════════════════════════════════════ -->
+<div class="page" id="page-faq">
+  <div class="page-hero">
+    <div class="page-hero-inner">
+      <p class="page-tag">CRICKET EXPLAINED</p>
+      <h1 class="page-title">IPL 2026 <em>FAQ</em></h1>
+      <p class="page-sub">Everything you need to know about IPL 2026 — answered.</p>
+    </div>
+  </div>
+  <div class="page-body" style="max-width:800px;">
+    <button class="back-btn" onclick="goHome()">← Back to Home</button>
+    <div class="card" style="margin-bottom:16px;" id="faq-page-container"></div>
+    <div class="seo-block">
+      <h2>About IPL 2026</h2>
+      <p>The <strong>TATA Indian Premier League 2026</strong> is the 19th season of the IPL. It runs from <strong>March 28 to May 31, 2026</strong>, featuring 10 franchises competing in 74 matches across 14 venues in India. The Final is on <strong>May 31 in Bengaluru</strong>.</p>
+      <h3>IPL 2026 Broadcasting</h3>
+      <p>Watch IPL 2026 live on <strong>Star Sports</strong> (TV) and <strong>JioHotstar</strong> (digital streaming) in India. Available in Hindi, English, Tamil, Telugu, Kannada and Bengali. International: <strong>Willow TV</strong> (North America), <strong>Sky Sports</strong> (UK), <strong>SuperSport</strong> (South Africa).</p>
+      <h3>IPL 2026 Tickets</h3>
+      <p>IPL 2026 match tickets are available on the official BCCI/IPL website and BookMyShow. Prices vary by venue and stand — from ₹500 to ₹10,000+ for premium seats.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
      PAGE: PRIVACY POLICY
 ═══════════════════════════════════════════════ -->
 <div class="page" id="page-privacy">
@@ -667,7 +755,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       <p>We may update this Privacy Policy from time to time. The date at the top of this page will reflect the most recent revision. Continued use of the site after changes constitutes acceptance of the updated policy.</p>
 
       <h3>8. Contact</h3>
-      <p>For any privacy-related questions, please contact us at: <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="eb838e879bc5989f9e869b9184858eab8c868a8287c5888486">[email&#160;protected]</a></strong></p>
+      <p>For any privacy-related questions, please contact us at: <strong><span class="sz-email-link"></span></strong></p>
     </div>
   </div>
 </div>
@@ -704,7 +792,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       <p>Live match data is sourced from the CricAPI (cricketdata.org). News is aggregated from Google News, which indexes real-time content from leading sports publications. We do not claim ownership of third-party data.</p>
 
       <h3>Contact Us</h3>
-      <p>Have a suggestion, spotted an error, or want to collaborate? We'd love to hear from you. Reach us at <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4129242d316f3235342c313b2e2f2401262c20282d6f222e2c">[email&#160;protected]</a></strong></p>
+      <p>Have a suggestion, spotted an error, or want to collaborate? We'd love to hear from you. Reach us at <strong><span class="sz-email-link"></span></strong></p>
     </div>
   </div>
 </div>
@@ -726,12 +814,12 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       <div class="seo-block" style="margin-bottom:0;">
         <h3 style="font-size:16px;margin-bottom:8px;">📧 Email Us</h3>
         <p>For general enquiries, corrections, or feedback:</p>
-        <p style="margin-top:8px;"><a href="/cdn-cgi/l/email-protection#274f424b57095453524a575d48494267404a464e4b0944484a" style="color:var(--orange);font-weight:600;"><span class="__cf_email__" data-cfemail="1179747d613f6265647c616b7e7f7451767c70787d3f727e7c">[email&#160;protected]</span></a></p>
+        <p style="margin-top:8px;"><span class="sz-email-link" style="color:var(--orange);font-weight:600;"></span></p>
       </div>
       <div class="seo-block" style="margin-bottom:0;">
         <h3 style="font-size:16px;margin-bottom:8px;">🤝 Partnerships</h3>
         <p>Interested in advertising or collaborating?</p>
-        <p style="margin-top:8px;"><a href="/cdn-cgi/l/email-protection#5b333e372b75282f2e362b2134353e1b3c363a323775383436" style="color:var(--orange);font-weight:600;"><span class="__cf_email__" data-cfemail="472f222b37693433322a373d28292207202a262e2b6924282a">[email&#160;protected]</span></a></p>
+        <p style="margin-top:8px;"><span class="sz-email-link" style="color:var(--orange);font-weight:600;"></span></p>
       </div>
     </div>
     <div class="seo-block">
@@ -739,7 +827,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       <h3>How often is the data updated?</h3>
       <p>Live scores and points table are fetched fresh on every page load from CricAPI. News is refreshed every 30 minutes from Google News aggregation. Match schedules update automatically throughout the season.</p>
       <h3>I spotted an error in the data</h3>
-      <p>Live data comes from CricAPI and may occasionally have a short delay. If you spot a persistent error, please email us at <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="046c6168742a77707169747e6b6a61446369656d682a676b69">[email&#160;protected]</a></strong> with the details and we'll fix it promptly.</p>
+      <p>Live data comes from CricAPI and may occasionally have a short delay. If you spot a persistent error, please email us at <strong><span class="sz-email-link"></span></strong> with the details and we'll fix it promptly.</p>
       <h3>Can I share StumpZone with friends?</h3>
       <p>Absolutely! Share stumpzone.in freely. You can share links to specific sections — points table at <strong>stumpzone.in/#table</strong>, fixtures at <strong>stumpzone.in/#fixtures</strong>, and our quiz at <strong>stumpzone.in/#quiz</strong>.</p>
       <h3>Is StumpZone affiliated with BCCI or IPL?</h3>
@@ -777,7 +865,7 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
         <a href="#page-about" onclick="goPage('about')">About Us</a>
         <a href="#page-contact" onclick="goPage('contact')">Contact</a>
         <a href="#page-privacy" onclick="goPage('privacy')">Privacy Policy</a>
-        <a href="/cdn-cgi/l/email-protection#b6ded3dac698c5c2c3dbc6ccd9d8d3f6d1dbd7dfda98d5d9db"><span class="__cf_email__" data-cfemail="5c3439302c722f2829312c263332391c3b313d3530723f3331">[email&#160;protected]</span></a>
+        <span class="sz-email-link"></span>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1270,7 +1358,51 @@ document.querySelectorAll('nav a[href^="#"]').forEach(a=>{
   });
 });
 
-// ── PAGE ROUTING ─────────────────────────────────────────────
+// ── PAGE TEAMS ───────────────────────────────────────────────
+function renderPageTeams() {
+  var g = document.getElementById('teams-grid-page');
+  if (g && !g.innerHTML.trim()) {
+    g.innerHTML = Object.entries(TEAMS).map(function(entry) {
+      var a = entry[0], t = entry[1];
+      return '<div class="tm-card"><div class="tm-circle" style="background:' + t.color + '">' + a + '</div><div class="tm-abbr">' + a + '</div></div>';
+    }).join('');
+  }
+  var dg = document.getElementById('teams-detail-grid');
+  if (dg && !dg.innerHTML.trim()) {
+    var pts = cGet('pts') || FALLBACK.points;
+    dg.innerHTML = Object.entries(TEAMS).map(function(entry) {
+      var abbr = entry[0], t = entry[1];
+      var standing = pts.find(function(p){ return p.abbr === abbr; });
+      var rank = standing ? (pts.indexOf(standing) + 1) : '—';
+      var ptsVal = standing ? standing.pts : '—';
+      return '<div class="card" style="padding:16px;">' +
+        '<div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">' +
+        '<div class="tm-circle" style="background:' + t.color + ';width:44px;height:44px;font-size:13px;">' + abbr + '</div>' +
+        '<div><div style="font-family:\'Bebas Neue\',cursive;font-size:18px;">' + t.name + '</div>' +
+        '<div style="font-size:11px;color:var(--muted2);">Rank #' + rank + ' · ' + ptsVal + ' pts</div></div></div>' +
+        '<div style="font-size:12px;color:var(--muted2);">See <a href="#page-fixtures" onclick="goPage(\'fixtures\')" style="color:var(--orange);">Fixtures</a> for schedule</div></div>';
+    }).join('');
+  }
+}
+
+// ── PAGE FAQ ─────────────────────────────────────────────────
+function renderPageFAQ() {
+  var c = document.getElementById('faq-page-container');
+  if (!c || c.innerHTML.trim()) return;
+  c.innerHTML = FAQS.map(function(f, i) {
+    return '<div class="faq-item"><div class="faq-q" onclick="toggleFaq2(' + i + ')">' +
+      '<span>' + f.q + '</span><span class="faq-icon" id="faq2-icon-' + i + '">+</span></div>' +
+      '<div class="faq-a" id="faq2-a-' + i + '">' + f.a + '</div></div>';
+  }).join('');
+}
+function toggleFaq2(i) {
+  var a = document.getElementById('faq2-a-' + i);
+  var ic = document.getElementById('faq2-icon-' + i);
+  if (!a) return;
+  var open = a.classList.toggle('open');
+  ic.textContent = open ? '×' : '+';
+}
+
 // ── PAGE QUIZ ─────────────────────────────────────────────────
 let PQs=[], pQ=0, pSc=0, pAns=false, pGames=0, pBest=0, pTotal=0;
 
@@ -1367,6 +1499,9 @@ function goPage(name) {
   if (name === 'table') renderPageTable();
   if (name === 'fixtures') renderPageFixtures();
   if (name === 'quiz') initPageQuiz();
+  if (name === 'news') { loadNews(false); }
+  if (name === 'teams') renderPageTeams();
+  if (name === 'faq') renderPageFAQ();
   return false;
 }
 
@@ -1466,6 +1601,16 @@ document.querySelectorAll('nav a[href^="#"]:not([onclick])').forEach(function(a)
   });
 });
 
+// ── EMAIL INJECTION (bypasses Cloudflare obfuscation) ────────
+(function() {
+  var u = 'help.stumpzone';
+  var d = 'gmail.com';
+  var em = u + '\u0040' + d;
+  document.querySelectorAll('.sz-email-link').forEach(function(el) {
+    el.innerHTML = '<a href="mai' + 'lto:' + em + '" style="color:inherit;">' + em + '</a>';
+  });
+})();
+
 // ── FOOTER DATE ──────────────────────────────────────────────
 const fdEl = document.getElementById('footer-date');
 if (fdEl) fdEl.textContent = 'Updated: ' + new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
@@ -1476,11 +1621,9 @@ renderHeroMatch(FALLBACK.today);
 renderTable(FALLBACK.points);
 renderResults(FALLBACK.results);
 renderSchedule(FALLBACK.schedule);
-renderLiveScores([]);         // show "no live matches" instead of spinner
-renderTeams();
-renderFAQ();
+renderLiveScores([]);
 initQuiz();
-loadNews();
+loadNews(false);
 
 // Load hash-based page on initial load
 (function() {
