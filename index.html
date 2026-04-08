@@ -873,11 +873,11 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
       <p id="footer-date">Updated: April 2026</p>
     </div>
     <div class="seo-footer">
-      <strong>IPL 2026 Today's Match:</strong> Check live score and points table on StumpZone. ·
-      <strong>IPL 2026 Teams:</strong> RCB, CSK, MI, KKR, SRH, RR, PBKS, GT, DC, LSG. ·
+      <strong>IPL 2026 Today:</strong> Match 14 — DC vs GT, Arun Jaitley Stadium Delhi, April 8, 7:30 PM IST. ·
+      <strong>Latest Result:</strong> RR beat MI by 27 runs (M13) | Jaiswal 77*(32), Sooryavanshi 39(11). ·
+      <strong>Points Table:</strong> RR 1st (6pts) · PBKS 2nd (5pts) · RCB 3rd (4pts) · DC 4th (4pts). ·
       <strong>IPL 2026 Schedule:</strong> March 28 – May 31, 2026 · 74 matches. ·
       <strong>IPL 2026 Final:</strong> May 31, Bengaluru. ·
-      <strong>Points Table Leader:</strong> PBKS (5pts). ·
       <strong>Watch:</strong> Star Sports TV · JioHotstar · Willow TV (US) · Sky Sports (UK). ·
       <strong>Key Transfers:</strong> Sanju Samson → CSK · Jadeja → RR · Cameron Green → KKR (₹25.20 Cr).
     </div>
@@ -886,7 +886,8 @@ footer{background:var(--bg2);border-top:1px solid var(--border);padding:36px 20p
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 const CRICKET_API_KEY = 'fdb98ab9-2df4-4bae-b02f-6eaa8da7d220';
-const CACHE_TTL = 10 * 60 * 1000;
+const CACHE_TTL = 5 * 60 * 1000;      // 5 min for scores (was 10)
+const CACHE_TTL_LONG = 30 * 60 * 1000; // 30 min for series ID and schedule
 const BASE = 'https://api.cricapi.com/v1';
 
 const TEAMS = {
@@ -904,38 +905,39 @@ const TEAMS = {
 
 const FALLBACK = {
   points:[
-    {abbr:'PBKS',m:3,w:2,l:0,pts:5,nrr:'+0.637'},
-    {abbr:'RCB', m:2,w:2,l:0,pts:4,nrr:'+2.501'},
-    {abbr:'RR',  m:2,w:2,l:0,pts:4,nrr:'+2.233'},
-    {abbr:'DC',  m:2,w:2,l:0,pts:4,nrr:'+1.170'},
-    {abbr:'SRH', m:3,w:1,l:2,pts:2,nrr:'+0.275'},
-    {abbr:'MI',  m:2,w:1,l:1,pts:2,nrr:'-0.206'},
-    {abbr:'LSG', m:2,w:1,l:1,pts:2,nrr:'-0.542'},
-    {abbr:'KKR', m:3,w:0,l:2,pts:1,nrr:'-1.964'},
-    {abbr:'GT',  m:2,w:0,l:2,pts:0,nrr:'-0.424'},
-    {abbr:'CSK', m:3,w:0,l:3,pts:0,nrr:'-2.517'},
+    {abbr:'RR',  m:3,w:3,l:0,pts:6, nrr:'+3.120'},
+    {abbr:'PBKS',m:3,w:2,l:0,pts:5, nrr:'+0.637'},
+    {abbr:'RCB', m:2,w:2,l:0,pts:4, nrr:'+2.501'},
+    {abbr:'DC',  m:2,w:2,l:0,pts:4, nrr:'+1.170'},
+    {abbr:'SRH', m:3,w:1,l:2,pts:2, nrr:'+0.275'},
+    {abbr:'LSG', m:2,w:1,l:1,pts:2, nrr:'-0.542'},
+    {abbr:'MI',  m:3,w:1,l:2,pts:2, nrr:'-0.820'},
+    {abbr:'KKR', m:3,w:0,l:2,pts:1, nrr:'-1.964'},
+    {abbr:'GT',  m:2,w:0,l:2,pts:0, nrr:'-0.424'},
+    {abbr:'CSK', m:3,w:0,l:3,pts:0, nrr:'-2.517'},
   ],
   results:[
-    {m:12,date:'Apr 7', t1:'KKR',s1:'25/2 (3.4)',  t2:'PBKS',s2:'—',           winner:'NR', sum:'No Result — Abandoned due to rain'},
-    {m:11,date:'Apr 6', t1:'RCB',s1:'250/3 (20)',  t2:'CSK', s2:'207 (19.4)',   winner:'RCB',sum:'RCB won by 43 runs'},
-    {m:10,date:'Apr 5', t1:'SRH',s1:'—',           t2:'LSG', s2:'Win',          winner:'LSG',sum:'LSG beat SRH'},
-    {m:5, date:'Apr 1', t1:'DC', s1:'142/4 (18.3)',t2:'LSG', s2:'141/10 (20)', winner:'DC', sum:'DC won by 6 wickets | Sameer Rizvi 70*'},
-    {m:3, date:'Mar 30',t1:'RR', s1:'128/2 (14.1)',t2:'CSK', s2:'127/10 (20)', winner:'RR', sum:'RR won by 8 wickets | Sooryavanshi stars'},
+    {m:13,date:'Apr 7', t1:'RR', s1:'150/3 (11)', t2:'MI',  s2:'123/9 (11)',  winner:'RR',  sum:'RR won by 27 runs (D/L) | Jaiswal 77*(32), Sooryavanshi 39(11) | 11-over match'},
+    {m:12,date:'Apr 7', t1:'KKR',s1:'25/2 (3.4)', t2:'PBKS',s2:'—',          winner:'NR',  sum:'No Result — Abandoned due to rain. KKR 25-2 after 3.4 overs.'},
+    {m:11,date:'Apr 6', t1:'RCB',s1:'250/3 (20)', t2:'CSK', s2:'207 (19.4)', winner:'RCB', sum:'RCB won by 43 runs | RCB 250-3 vs CSK 207'},
+    {m:10,date:'Apr 5', t1:'SRH',s1:'—',          t2:'LSG', s2:'Win',        winner:'LSG', sum:'Lucknow Super Giants beat Sunrisers Hyderabad'},
+    {m:5, date:'Apr 1', t1:'DC', s1:'142/4 (18.3)',t2:'LSG',s2:'141/10 (20)',winner:'DC',  sum:'DC won by 6 wickets | Sameer Rizvi 70*'},
   ],
   schedule:[
-    {m:13,day:'7', mon:'APR',t1:'RR', t2:'MI',  venue:'Sawai Mansingh Stadium, Jaipur',time:'7:30 PM',today:true},
-    {m:14,day:'8', mon:'APR',t1:'DC', t2:'GT',  venue:'Arun Jaitley Stadium, Delhi',   time:'7:30 PM',today:false},
-    {m:15,day:'9', mon:'APR',t1:'LSG',t2:'SRH', venue:'BRSABV Ekana, Lucknow',         time:'7:30 PM',today:false},
-    {m:16,day:'10',mon:'APR',t1:'CSK',t2:'KKR', venue:'MA Chidambaram, Chennai',       time:'7:30 PM',today:false},
-    {m:17,day:'11',mon:'APR',t1:'MI', t2:'PBKS',venue:'Wankhede Stadium, Mumbai',      time:'7:30 PM',today:false},
+    {m:14,day:'8', mon:'APR',t1:'DC',  t2:'GT',  venue:'Arun Jaitley Stadium, Delhi',      time:'7:30 PM',today:true},
+    {m:15,day:'9', mon:'APR',t1:'RCB', t2:'SRH', venue:'M Chinnaswamy Stadium, Bengaluru', time:'7:30 PM',today:false},
+    {m:16,day:'10',mon:'APR',t1:'CSK', t2:'RR',  venue:'MA Chidambaram Stadium, Chennai',  time:'7:30 PM',today:false},
+    {m:17,day:'11',mon:'APR',t1:'MI',  t2:'PBKS',venue:'Wankhede Stadium, Mumbai',         time:'7:30 PM',today:false},
+    {m:18,day:'12',mon:'APR',t1:'LSG', t2:'KKR', venue:'BRSABV Ekana Stadium, Lucknow',    time:'7:30 PM',today:false},
   ],
-  today:{num:13,t1:'RR',t1full:'Rajasthan Royals',t2:'MI',t2full:'Mumbai Indians',
-         venue:'Sawai Mansingh Stadium, Jaipur',date:'April 7, 2026',time:'7:30 PM IST'},
+  today:{num:14,t1:'DC',t1full:'Delhi Capitals',t2:'GT',t2full:'Gujarat Titans',
+         venue:'Arun Jaitley Stadium, Delhi',date:'April 8, 2026',time:'7:30 PM IST'},
   ticker:[
-    '📊 PBKS lead IPL 2026 standings on 5pts · RCB, RR, DC all on 4pts',
-    '🌧️ M12: KKR vs PBKS — No Result due to rain',
-    '🏏 M11: RCB beat CSK by 43 runs | 250-3 vs 207',
-    '⭐ Vaibhav Sooryavanshi stars for RR vs CSK in M3',
+    '🔥 TODAY M14: DC vs GT | Arun Jaitley Stadium, Delhi | 7:30 PM IST',
+    '🏏 M13: RR beat MI by 27 runs | Jaiswal 77*(32) | Sooryavanshi 39(11) | Rain-curtailed',
+    '📊 STANDINGS: RR top on 6pts (3/3 wins) | PBKS 2nd on 5pts | RCB & DC on 4pts',
+    '⭐ Yashasvi Jaiswal — Orange Cap leader with 170 runs in 3 matches (SR 170)',
+    '🌧️ M12: KKR vs PBKS — No Result due to rain | Both get 1pt',
     '🏆 Defending Champions: Royal Challengers Bengaluru (RCB)',
     '💰 Cameron Green (KKR) — IPL record overseas buy ₹25.20 Cr',
     '📅 IPL 2026 Final: May 31 · Bengaluru',
@@ -943,24 +945,27 @@ const FALLBACK = {
 };
 
 const FAQS = [
-  {q:'Who is leading the IPL 2026 points table?',a:'Punjab Kings (PBKS) are currently leading the IPL 2026 standings with 5 points from 3 matches (2 wins, 0 losses, 1 no result).'},
+  {q:'Who is leading the IPL 2026 points table?',a:'Rajasthan Royals (RR) lead the IPL 2026 standings with 6 points from 3 matches — 3 wins out of 3. They are the only unbeaten team in the tournament after Match 13.'},
   {q:'Who won IPL 2025?',a:'Royal Challengers Bengaluru (RCB) won IPL 2025, ending their long wait for the trophy. They are the defending champions in IPL 2026.'},
+  {q:'What happened in RR vs MI Match 13?',a:'Rajasthan Royals beat Mumbai Indians by 27 runs in a rain-curtailed 11-over match at Barsapara Stadium, Guwahati. Yashasvi Jaiswal scored an unbeaten 77 off 32 balls and Vaibhav Sooryavanshi hit 39 off 11 balls (including sixes off Bumrah). RR posted 150/3, MI were bowled out for 123/9.'},
   {q:'When is the IPL 2026 Final?',a:'The IPL 2026 Final is scheduled for May 31, 2026 in Bengaluru.'},
   {q:'How many teams play in IPL 2026?',a:'10 teams compete in IPL 2026: RCB, CSK, MI, KKR, SRH, RR, PBKS, GT, DC, and LSG. Each team plays 16 league matches.'},
   {q:'Where can I watch IPL 2026 live?',a:'IPL 2026 is available live on Star Sports (TV) and JioHotstar (digital) in India. International viewers can watch on Willow TV (North America) and Sky Sports (UK).'},
-  {q:'Who is the most expensive player in IPL 2026?',a:'Cameron Green (KKR) is the most expensive overseas player in IPL 2026 history, bought for ₹25.20 crore. Among Indian players, multiple top stars commanded huge prices in the mega auction.'},
+  {q:'Who is the most expensive player in IPL 2026?',a:'Cameron Green (KKR) is the most expensive overseas player in IPL 2026 history, bought for ₹25.20 crore.'},
   {q:'What is Net Run Rate (NRR) in IPL?',a:'NRR is (Runs scored ÷ Overs faced) minus (Runs conceded ÷ Overs bowled). It acts as a tiebreaker when teams finish with equal points in the IPL standings.'},
   {q:'How do IPL 2026 playoffs work?',a:'The top 4 teams qualify. Qualifier 1 (1st vs 2nd), Eliminator (3rd vs 4th), Qualifier 2 (loser of Q1 vs winner of Eliminator), then the Final. Top 2 teams get two chances to reach the final.'},
 ];
 
 // CACHE
 function cSet(k,v){try{localStorage.setItem(k,JSON.stringify({ts:Date.now(),v}))}catch(e){}}
-function cGet(k){try{const r=localStorage.getItem(k);if(!r)return null;const{ts,v}=JSON.parse(r);return(Date.now()-ts<CACHE_TTL)?v:null}catch(e){return null}}
+function cGet(k,ttl){try{const r=localStorage.getItem(k);if(!r)return null;const{ts,v}=JSON.parse(r);return(Date.now()-ts<(ttl||CACHE_TTL))?v:null}catch(e){return null}}
 
 // API
 async function apiGet(path){
   const sep=path.includes('?')?'&':'?';
-  const r=await fetch(`${BASE}/${path}${sep}apikey=${CRICKET_API_KEY}`);
+  const url=`${BASE}/${path}${sep}apikey=${CRICKET_API_KEY}`;
+  const r=await fetch(url);
+  if(!r.ok)throw new Error('HTTP '+r.status);
   const j=await r.json();
   if(j.status!=='success')throw new Error(j.reason||j.info||'API error');
   return j.data;
@@ -981,7 +986,12 @@ function toAbbr(n=''){
   return n.slice(0,4);
 }
 
-// RENDERS
+function markLive(id){
+  const el=document.getElementById(id);
+  if(el){el.textContent='🟢 Live';el.style.color='var(--green)';}
+}
+
+// ── RENDER FUNCTIONS ─────────────────────────────────────────
 function renderTicker(items){
   const list=items||FALLBACK.ticker;
   document.getElementById('ticker-track').innerHTML=[...list,...list].map(t=>`<span>${t}</span>`).join('');
@@ -1017,10 +1027,9 @@ function renderTable(pts){
   }).join('');
   const maxM=Math.max(...data.map(t=>t.m||0));
   const hdr=document.getElementById('pt-updated');
-  if(hdr)hdr.textContent=`Live · After Match ${maxM}`;
-  const leader=data[0];
+  if(hdr&&maxM>0)hdr.textContent=`After Match ${maxM}`;
   const sl=document.getElementById('stat-leader');
-  if(sl&&leader)sl.textContent=leader.abbr;
+  if(sl&&data[0])sl.textContent=data[0].abbr;
   const sp=document.getElementById('stat-played');
   if(sp)sp.textContent=maxM;
 }
@@ -1068,8 +1077,9 @@ function renderSchedule(data){
 
 function renderLiveScores(matches){
   const c=document.getElementById('live-scores-container');
+  if(!c)return;
   if(!matches||!matches.length){
-    c.innerHTML=`<div class="ls-empty">No live matches right now. Check schedule below ↓</div>`;
+    c.innerHTML=`<div class="ls-empty">No live IPL matches right now — check schedule below ↓</div>`;
     return;
   }
   c.innerHTML=matches.map(m=>{
@@ -1090,12 +1100,10 @@ function renderLiveScores(matches){
           <span style="color:${c2}">${a2}</span>
           ${s2?`<span class="ls-score">${s2}</span>`:''}
         </div>
-        <div class="ls-status">${m.status||''}</div>
+        <div class="ls-status">${m.status||m.name||''}</div>
       </div>
     </div>`;
   }).join('');
-  const updated=document.getElementById('scores-updated');
-  if(updated)updated.textContent='Updated '+new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   const ticker=matches.map(m=>{
     const t=m.teams||[];
     return`🏏 ${toAbbr(t[0]||'')} vs ${toAbbr(t[1]||'')} · ${m.status||''}`;
@@ -1104,212 +1112,102 @@ function renderLiveScores(matches){
 }
 
 function renderTeams(){
-  document.getElementById('teams-grid').innerHTML=Object.entries(TEAMS).map(([a,t])=>
+  const g=document.getElementById('teams-grid');
+  if(g)g.innerHTML=Object.entries(TEAMS).map(([a,t])=>
     `<div class="tm-card"><div class="tm-circle" style="background:${t.color}">${a}</div><div class="tm-abbr">${a}</div></div>`
   ).join('');
 }
 
 function renderFAQ(){
-  document.getElementById('faq-container').innerHTML=FAQS.map((f,i)=>
-    `<div class="faq-item">
-      <div class="faq-q" onclick="toggleFaq(${i})">
-        <span>${f.q}</span>
-        <span class="faq-icon" id="faq-icon-${i}">+</span>
-      </div>
-      <div class="faq-a" id="faq-a-${i}">${f.a}</div>
-    </div>`
+  const c=document.getElementById('faq-container');
+  if(!c)return;
+  c.innerHTML=FAQS.map((f,i)=>
+    `<div class="faq-item"><div class="faq-q" onclick="toggleFaq(${i})">
+      <span>${f.q}</span><span class="faq-icon" id="faq-icon-${i}">+</span>
+    </div><div class="faq-a" id="faq-a-${i}">${f.a}</div></div>`
   ).join('');
 }
 
 function toggleFaq(i){
   const a=document.getElementById('faq-a-'+i);
   const ic=document.getElementById('faq-icon-'+i);
+  if(!a)return;
   const open=a.classList.toggle('open');
-  ic.classList.toggle('open',open);
   ic.textContent=open?'×':'+';
 }
 
-// QUIZ
-const QUESTIONS=[
-  {q:'Who are the defending IPL 2026 champions?',opts:['Mumbai Indians','Royal Challengers Bengaluru','Chennai Super Kings','Kolkata Knight Riders'],ans:1,fact:'RCB won IPL 2025, ending their long wait for the title.'},
-  {q:'Which teenager lit up IPL 2026 for Rajasthan Royals?',opts:['Rinku Singh','Prithvi Shaw','Vaibhav Sooryavanshi','Yashasvi Jaiswal'],ans:2,fact:'Vaibhav Sooryavanshi\'s stunning innings powered RR to beat CSK in match 3.'},
-  {q:'Cameron Green joined KKR for what record price?',opts:['₹18.50 Cr','₹21.00 Cr','₹23.75 Cr','₹25.20 Cr'],ans:3,fact:'Cameron Green is IPL\'s most expensive overseas player at ₹25.20 crore.'},
-  {q:'Where is the IPL 2026 Final scheduled?',opts:['Mumbai','Delhi','Chennai','Bengaluru'],ans:3,fact:'The IPL 2026 Final is on May 31, 2026 in Bengaluru.'},
-  {q:'Which team did Sanju Samson join from RR?',opts:['Mumbai Indians','Chennai Super Kings','Delhi Capitals','KKR'],ans:1,fact:'Sanju Samson moved to CSK; Ravindra Jadeja went to RR in exchange.'},
-  {q:'What score did RCB post vs CSK in Match 11?',opts:['210-4','228-5','250-3','198-6'],ans:2,fact:'RCB smashed 250-3 off 20 overs, winning by 43 runs in a dominant display.'},
-  {q:'Who scored 70* to lead DC past LSG?',opts:['Axar Patel','Rishabh Pant','Sameer Rizvi','Abhishek Sharma'],ans:2,fact:'Sameer Rizvi\'s unbeaten 70 guided DC to a 6-wicket win over LSG in match 5.'},
-  {q:'How many total matches in IPL 2026?',opts:['60','70','74','80'],ans:2,fact:'IPL 2026 has 70 league matches + 4 playoffs = 74 total matches.'},
-  {q:'IPL 2026 Final date?',opts:['May 15','May 24','May 31','June 5'],ans:2,fact:'The IPL 2026 Final is on May 31, 2026 in Bengaluru.'},
-  {q:'Who is leading IPL 2026 points table?',opts:['RCB','RR','PBKS','DC'],ans:2,fact:'PBKS lead with 5 points after 3 matches including a no-result vs KKR.'},
-];
-let Qs=[],cQ=0,Sc=0,ans=false;
-function shuffle(a){return[...a].sort(()=>Math.random()-.5);}
-function initQuiz(){Qs=shuffle(QUESTIONS).slice(0,5);cQ=0;Sc=0;ans=false;document.getElementById('q-result').style.display='none';document.getElementById('quiz-main').style.display='block';document.getElementById('q-score').textContent='0';showQ();}
-function showQ(){if(cQ>=Qs.length){showRes();return;}ans=false;const q=Qs[cQ];document.getElementById('q-prog').style.width=(cQ/Qs.length*100)+'%';document.getElementById('q-num').textContent=`QUESTION ${cQ+1} OF ${Qs.length}`;document.getElementById('q-text').textContent=q.q;document.getElementById('q-fb').className='q-fb';document.getElementById('q-next').style.display='none';document.getElementById('q-opts').innerHTML=q.opts.map((o,i)=>`<button class="q-opt" onclick="pickAns(${i})"><span class="ql">${'ABCD'[i]}.</span>${o}</button>`).join('');}
-function pickAns(idx){if(ans)return;ans=true;const q=Qs[cQ];const opts=document.querySelectorAll('.q-opt');opts.forEach(o=>o.classList.add('disabled'));opts[q.ans].classList.add('correct');const fb=document.getElementById('q-fb');if(idx===q.ans){Sc++;document.getElementById('q-score').textContent=Sc;fb.className='q-fb correct';fb.textContent='✅ Correct! '+q.fact;}else{opts[idx].classList.add('wrong');fb.className='q-fb wrong';fb.textContent='❌ Wrong! '+q.fact;}document.getElementById('q-prog').style.width=((cQ+1)/Qs.length*100)+'%';const nb=document.getElementById('q-next');nb.style.display='inline-flex';nb.textContent=cQ<Qs.length-1?'Next →':'Results →';nb.onclick=()=>{cQ++;showQ();};}
-function showRes(){document.getElementById('quiz-main').style.display='none';document.getElementById('q-result').style.display='block';document.getElementById('q-big').textContent=`${Sc}/${Qs.length}`;const rows=[[Sc===Qs.length,'🏆 PERFECT!','IPL legend! Flawless knowledge!'],[Sc>=4,'🔥 Excellent!','True cricket fan!'],[Sc>=2,'🏏 Good effort!','Keep watching IPL 2026!'],[true,'😅 Keep trying!','Come back after today\'s match!']];const[,m,s]=rows.find(([c])=>c);document.getElementById('q-msg').textContent=m;document.getElementById('q-sub').textContent=s;}
-
-// ── FREE NEWS (Google News RSS → auto-tag → display) ─────────
-// Sources: Google News aggregates Cricbuzz, ESPNcricinfo, TOI, HT etc.
-// No API key needed. Cached 30 min to avoid repeat fetches.
-
-const NEWS_QUERIES = [
-  'IPL+2026+cricket+match',
-  'IPL+2026+player+injury+news',
-  'IPL+2026+team+update',
-];
-const RSS2JSON = 'https://api.rss2json.com/v1/api.json';
-
-function getNewsTag(title = '') {
-  const t = title.toUpperCase();
-  if (/INJUR|RULED OUT|FRACTURE|HAMSTRING|KNEE|SHOULDER|SURGERY|CONCUSSION|DOUBTFUL|UNAVAILABLE/.test(t))
-    return { label:'🚑 INJURY', color:'var(--red)', bg:'rgba(255,68,68,.1)', border:'rgba(255,68,68,.3)' };
-  if (/TRANSFER|TRADE|SIGN|CONTRACT|AUCTION|RELEASE|REPLACE/.test(t))
-    return { label:'🔄 TRANSFER', color:'#a78bfa', bg:'rgba(167,139,250,.1)', border:'rgba(167,139,250,.3)' };
-  if (/WON|WINS|BEAT|DEFEAT|VICTORY|CENTURY|FIFTY|HUNDRED|SIX|WICKET|BOWLED|CATCHES/.test(t))
-    return { label:'🏏 MATCH', color:'var(--green)', bg:'rgba(0,212,106,.1)', border:'rgba(0,212,106,.3)' };
-  if (/PREVIEW|PREDICTION|PROBABLE XI|PITCH REPORT|DREAM11|FANTASY|HEAD TO HEAD/.test(t))
-    return { label:'📋 PREVIEW', color:'var(--blue)', bg:'rgba(77,159,255,.1)', border:'rgba(77,159,255,.3)' };
-  if (/RECORD|HISTORY|FIRST TIME|MILESTONE|ALL TIME|FASTEST|MOST/.test(t))
-    return { label:'🏆 RECORD', color:'var(--gold)', bg:'rgba(245,197,24,.1)', border:'rgba(245,197,24,.3)' };
-  if (/RETIRE|CAPTAIN|DROPPED|SELECTION|SQUAD|LINEUP|XI|TEAM ANNOUNCEMENT/.test(t))
-    return { label:'📢 SQUAD', color:'var(--orange)', bg:'rgba(255,95,31,.1)', border:'rgba(255,95,31,.3)' };
-  return { label:'📰 IPL 2026', color:'var(--orange)', bg:'rgba(255,95,31,.08)', border:'rgba(255,95,31,.2)' };
-}
-
-function cleanTitle(raw = '') {
-  // Google News appends "- Source Name" — remove it
-  return raw.replace(/\s+[-–—]\s+[\w\s]+$/, '').trim();
-}
-
-function timeAgo(pubDate) {
-  try {
-    const h = Math.round((Date.now() - new Date(pubDate)) / 3600000);
-    if (h < 1) return 'Just now';
-    if (h < 24) return `${h}h ago`;
-    return `${Math.round(h / 24)}d ago`;
-  } catch(e) { return 'Recently'; }
-}
-
-async function loadNews(isManual = false) {
-  const btn = document.getElementById('news-btn');
-  const loading = document.getElementById('news-loading');
-  if (btn) { btn.disabled = true; btn.textContent = '⏳ Fetching latest...'; }
-  if (loading) loading.style.display = 'block';
-
-  // Serve from cache unless manual refresh
-  if (!isManual) {
-    const cached = cGet('news_free');
-    if (cached) {
-      renderNewsItems(cached);
-      if (loading) loading.style.display = 'none';
-      if (btn) { btn.textContent = '🔄 Refresh News'; btn.disabled = false; }
-      return;
-    }
-  }
-
-  const allItems = [];
-  const seen = new Set();
-
-  for (const q of NEWS_QUERIES) {
-    try {
-      const url = `https://news.google.com/rss/search?q=${q}&hl=en-IN&gl=IN&ceid=IN:en`;
-      const res = await fetch(`${RSS2JSON}?rss_url=${encodeURIComponent(url)}&count=6`);
-      const data = await res.json();
-      for (const item of (data.items || [])) {
-        const headline = cleanTitle(item.title || '');
-        if (!headline || seen.has(headline.slice(0, 40))) continue;
-        seen.add(headline.slice(0, 40));
-        const tag = getNewsTag(headline);
-        allItems.push({
-          tag,
-          headline,
-          time: timeAgo(item.pubDate),
-          source: item.author || item.source || 'Cricket News',
-          url: item.link || '#',
-        });
-      }
-    } catch(e) { /* silently skip failed source */ }
-  }
-
-  if (allItems.length > 0) {
-    // Sort: injuries & transfers first (more viral/search traffic)
-    allItems.sort((a, b) => {
-      const priority = ['🚑 INJURY','🔄 TRANSFER','🏆 RECORD','🏏 MATCH','📋 PREVIEW','📢 SQUAD','📰 IPL 2026'];
-      return priority.indexOf(a.tag.label) - priority.indexOf(b.tag.label);
-    });
-    cSet('news_free', allItems);
-    renderNewsItems(allItems);
-  } else {
-    // Static fallback if all network requests fail
-    renderNewsItems([
-      {tag:getNewsTag('INJURY'),   headline:'Check back soon for latest IPL 2026 injury updates', time:'–', source:'StumpZone', url:'#'},
-      {tag:getNewsTag('IPL 2026'), headline:'PBKS lead IPL 2026 standings after strong start to season', time:'Today', source:'StumpZone', url:'#'},
-      {tag:getNewsTag('MATCH'),    headline:'RCB smash 250-3 to beat CSK by 43 runs in dominant display', time:'Yesterday', source:'StumpZone', url:'#'},
-      {tag:getNewsTag('RECORD'),   headline:'Vaibhav Sooryavanshi becomes youngest centurion in IPL history', time:'2d ago', source:'StumpZone', url:'#'},
-    ]);
-  }
-
-  if (loading) loading.style.display = 'none';
-  if (btn) { btn.textContent = '🔄 Refresh News'; btn.disabled = false; }
-}
-
-function renderNewsItems(items) {
-  const c = document.getElementById('news-container');
-  if (!c || !items?.length) return;
-  c.innerHTML = items.slice(0, 7).map(n => {
-    const t = n.tag;
-    const hasLink = n.url && n.url !== '#';
-    return `<a ${hasLink ? `href="${n.url}" target="_blank" rel="noopener noreferrer"` : ''} 
-      style="display:block;text-decoration:none;color:inherit;">
-      <div class="news-item" style="border-left:2px solid ${t.border};">
-        <span class="news-tag" style="background:${t.bg};border-color:${t.border};color:${t.color};">${t.label}</span>
-        <div class="news-hl">${n.headline}</div>
-        <div class="news-meta">${n.time} · ${n.source}${hasLink?' ↗':''}</div>
-      </div>
-    </a>`;
-  }).join('');
-}
-
-// API FETCHES
+// ── LIVE SCORES ───────────────────────────────────────────────
 async function fetchLiveScores(){
-  const cached=cGet('live');if(cached){renderLiveScores(cached);return;}
-  const all=await apiGet('currentMatches?offset=0');
-  const ipl=(all||[]).filter(m=>/indian premier league|ipl/i.test(m.name||m.series||''));
-  const data=ipl.length?ipl:(all||[]).slice(0,4);
-  cSet('live',data);renderLiveScores(data);
+  const cached=cGet('live');
+  if(cached){renderLiveScores(cached);return;}
+  try{
+    const all=await apiGet('currentMatches?offset=0');
+    const ipl=(all||[]).filter(m=>/indian premier league|ipl/i.test(m.name||m.series||''));
+    const data=ipl.length?ipl:(all||[]).slice(0,4);
+    cSet('live',data);renderLiveScores(data);markLive('scores-updated');
+  }catch(e){console.warn('StumpZone live scores:',e.message);}
 }
 
+// ── SERIES ID ─────────────────────────────────────────────────
 async function getSeriesId(){
-  const cached=cGet('series_id');if(cached)return cached;
-  const s=await apiGet('series?offset=0');
-  const f=(s||[]).find(x=>x.name&&/indian premier league 2026|ipl 2026/i.test(x.name));
-  if(!f)throw new Error('Series not found');
-  cSet('series_id',f.id);return f.id;
+  const cached=cGet('series_id',CACHE_TTL_LONG);
+  if(cached&&cached.length>5)return cached;
+  try{
+    for(const offset of [0,25,50]){
+      const s=await apiGet(`series?offset=${offset}`);
+      const f=(s||[]).find(x=>x.name&&/indian premier league 2026|ipl 2026|tata ipl 2026/i.test(x.name));
+      if(f){cSet('series_id',f.id);return f.id;}
+    }
+    throw new Error('IPL 2026 not found');
+  }catch(e){console.warn('StumpZone series ID:',e.message);throw e;}
 }
 
+// ── POINTS TABLE ──────────────────────────────────────────────
 async function fetchPointsTable(){
-  const cached=cGet('pts');if(cached){renderTable(cached);return;}
-  const id=await getSeriesId();
-  const raw=await apiGet(`series_points_table?id=${id}`);
-  const rows=raw?.pointsTable?raw.pointsTable.flatMap(g=>g.teamInfo||[]):(Array.isArray(raw)?raw:[]);
-  if(!rows.length)return;
-  const pts=rows.map(item=>{
-    const name=item.teamName||item.name||'';
-    const nrr=parseFloat(item.nrr||0);
-    return{abbr:toAbbr(name),m:parseInt(item.matchesPlayed||0),w:parseInt(item.wins||item.win||0),l:parseInt(item.losses||item.loss||0),pts:parseInt(item.points||item.pts||0),nrr:(nrr>=0?'+':'')+nrr.toFixed(3)};
-  }).filter(t=>t.abbr.length>=2);
-  if(pts.length>=8){cSet('pts',pts);renderTable(pts);}
+  const cached=cGet('pts');
+  if(cached){renderTable(cached);markLive('pt-updated');return;}
+  try{
+    const id=await getSeriesId();
+    const raw=await apiGet(`series_points_table?id=${id}`);
+    let rows=[];
+    if(raw?.pointsTable)rows=raw.pointsTable.flatMap(g=>g.teamInfo||g.teams||[]);
+    else if(Array.isArray(raw))rows=raw;
+    else if(raw?.standings)rows=raw.standings;
+    if(!rows.length){console.warn('StumpZone: empty points table');return;}
+    const pts=rows.map(item=>{
+      const name=item.teamName||item.name||item.team||'';
+      const nrr=parseFloat(item.nrr||item.netRunRate||0);
+      return{abbr:toAbbr(name),
+        m:parseInt(item.matchesPlayed||item.played||item.p||0),
+        w:parseInt(item.wins||item.win||item.w||0),
+        l:parseInt(item.losses||item.loss||item.l||0),
+        pts:parseInt(item.points||item.pts||item.pt||0),
+        nrr:(nrr>=0?'+':'')+nrr.toFixed(3)};
+    }).filter(t=>t.abbr&&t.abbr.length>=2);
+    if(pts.length>=8){cSet('pts',pts);renderTable(pts);markLive('pt-updated');}
+  }catch(e){console.warn('StumpZone points table:',e.message);}
 }
 
+// ── MATCHES / SCHEDULE / RESULTS ─────────────────────────────
 async function fetchMatches(){
-  const cached=cGet('matches');if(cached){processMatches(cached);return;}
-  const id=await getSeriesId();
-  const info=await apiGet(`series_info?id=${id}`);
-  const list=info?.matchList||info?.matchSchedule||[];
-  const arr=Array.isArray(list)?list:[];
-  if(arr.length){cSet('matches',arr);processMatches(arr);}
+  const cached=cGet('matches',CACHE_TTL_LONG);
+  if(cached){processMatches(cached);return;}
+  try{
+    const id=await getSeriesId();
+    // Try primary endpoint first
+    let list=[];
+    try{
+      const data=await apiGet(`matches?series_id=${id}&offset=0`);
+      list=Array.isArray(data)?data:(data?.data||data?.matchList||data?.matches||[]);
+    }catch(e1){
+      // Fallback to series_info
+      const data=await apiGet(`series_info?id=${id}`);
+      list=data?.matchList||data?.matchSchedule||data?.matches||[];
+    }
+    if(Array.isArray(list)&&list.length){cSet('matches',list);processMatches(list);}
+  }catch(e){console.warn('StumpZone matches:',e.message);}
 }
+
 
 function processMatches(matches){
   if(!matches||!matches.length)return;
