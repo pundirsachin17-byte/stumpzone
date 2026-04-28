@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>StumpZone Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0a0d16;color:#e8ecf8;font-family:'Inter',sans-serif;font-size:14px;min-height:100vh;}
+a{color:#ff5f1f;text-decoration:none;}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-box{background:#0e1220;border:1px solid #1a2035;border-radius:12px;padding:40px;width:100%;max-width:380px;text-align:center;}
+.login-logo{font-size:28px;font-weight:700;letter-spacing:1px;margin-bottom:8px;}
+.login-logo span{color:#ff5f1f;}
+.login-logo em{color:#f5c518;font-style:normal;}
+.login-sub{font-size:13px;color:#6b7a9a;margin-bottom:28px;}
+.input{width:100%;background:#131826;border:1px solid #222d45;color:#e8ecf8;border-radius:8px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:14px;outline:none;margin-bottom:12px;}
+.input:focus{border-color:#ff5f1f;}
+.btn-primary{width:100%;background:#ff5f1f;color:#fff;border:none;border-radius:8px;padding:11px;font-family:'Inter',sans-serif;font-weight:700;font-size:14px;cursor:pointer;transition:filter .15s;}
+.btn-primary:hover{filter:brightness(1.1);}
+.err-msg{color:#ff6b6b;font-size:12px;margin-top:8px;}
+
+/* ADMIN UI */
+.admin-wrap{display:none;min-height:100vh;}
+.admin-header{background:#0e1220;border-bottom:1px solid #1a2035;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.admin-logo{font-size:18px;font-weight:700;letter-spacing:1px;}
+.admin-logo span{color:#ff5f1f;}
+.admin-logo em{font-style:normal;color:#f5c518;}
+.admin-nav{display:flex;gap:6px;}
+.tab{background:transparent;border:1px solid #1a2035;color:#6b7a9a;border-radius:6px;padding:6px 14px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .15s;}
+.tab.active,.tab:hover{background:#ff5f1f;color:#fff;border-color:#ff5f1f;}
+.admin-content{max-width:1000px;margin:0 auto;padding:28px 24px;}
+
+/* TABS */
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* COMPOSE */
+.compose-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:12px;font-weight:700;color:#6b7a9a;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;}
+.form-input{width:100%;background:#131826;border:1px solid #222d45;color:#e8ecf8;border-radius:8px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:border-color .15s;}
+.form-input:focus{border-color:#ff5f1f;}
+.form-select{width:100%;background:#131826;border:1px solid #222d45;color:#e8ecf8;border-radius:8px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:14px;outline:none;}
+.form-textarea{width:100%;background:#131826;border:1px solid #222d45;color:#e8ecf8;border-radius:8px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;outline:none;resize:vertical;min-height:400px;line-height:1.7;transition:border-color .15s;}
+.form-textarea:focus{border-color:#ff5f1f;}
+
+/* TOOLBAR */
+.toolbar{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;background:#131826;border:1px solid #222d45;border-bottom:none;border-radius:8px 8px 0 0;padding:8px;}
+.tb-btn{background:#1a2035;border:none;color:#e8ecf8;border-radius:4px;padding:5px 10px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;}
+.tb-btn:hover{background:#ff5f1f;color:#fff;}
+.tb-sep{width:1px;background:#1a2035;margin:0 4px;}
+
+/* SIDEBAR PANELS */
+.side-panel{background:#0e1220;border:1px solid #1a2035;border-radius:10px;padding:18px;margin-bottom:16px;}
+.side-panel h3{font-size:13px;font-weight:700;margin-bottom:12px;color:#e8ecf8;}
+.preview-box{background:#131826;border:1px solid #222d45;border-radius:8px;padding:14px;font-size:13px;color:#6b7a9a;min-height:80px;line-height:1.6;}
+.char-count{font-size:11px;color:#4a5878;text-align:right;margin-top:4px;}
+
+/* PUBLISH BTN */
+.publish-btn{width:100%;background:linear-gradient(135deg,#ff5f1f,#ff8c42);color:#fff;border:none;border-radius:8px;padding:13px;font-family:'Inter',sans-serif;font-weight:700;font-size:15px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px;}
+.publish-btn:hover{filter:brightness(1.05);transform:translateY(-1px);}
+.publish-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.save-draft-btn{width:100%;background:#131826;color:#6b7a9a;border:1px solid #222d45;border-radius:8px;padding:10px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;cursor:pointer;transition:all .15s;margin-top:8px;}
+.save-draft-btn:hover{border-color:#ff5f1f;color:#ff5f1f;}
+
+/* STATUS */
+.status-bar{background:#0a1a0a;border:1px solid rgba(0,212,106,.3);border-radius:8px;padding:10px 14px;font-size:13px;color:#00d46a;margin-top:12px;display:none;}
+.status-bar.error{background:#1a0a0a;border-color:rgba(255,68,68,.3);color:#ff6b6b;}
+.status-bar.show{display:flex;align-items:center;gap:8px;}
+
+/* ARTICLES LIST */
+.articles-table{background:#0e1220;border:1px solid #1a2035;border-radius:10px;overflow:hidden;}
+.articles-table-hd{display:grid;grid-template-columns:1fr 100px 120px 100px 80px;gap:0;padding:12px 16px;background:#131826;border-bottom:1px solid #1a2035;font-size:11px;font-weight:700;color:#6b7a9a;letter-spacing:1px;text-transform:uppercase;}
+.article-row{display:grid;grid-template-columns:1fr 100px 120px 100px 80px;gap:0;padding:14px 16px;border-bottom:1px solid #1a2035;align-items:center;transition:background .1s;}
+.article-row:last-child{border-bottom:none;}
+.article-row:hover{background:#131826;}
+.article-row-title{font-weight:600;font-size:13px;color:#e8ecf8;line-height:1.35;}
+.article-row-title small{display:block;font-size:11px;font-weight:400;color:#4a5878;margin-top:2px;}
+.article-cat{display:inline-flex;font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;letter-spacing:1px;}
+.cat-match{background:rgba(0,212,106,.1);color:#00d46a;border:1px solid rgba(0,212,106,.3);}
+.cat-preview{background:rgba(77,159,255,.1);color:#4d9fff;border:1px solid rgba(77,159,255,.3);}
+.cat-analysis{background:rgba(245,197,24,.1);color:#f5c518;border:1px solid rgba(245,197,24,.3);}
+.cat-feature{background:rgba(167,139,250,.1);color:#a78bfa;border:1px solid rgba(167,139,250,.3);}
+.cat-injury{background:rgba(255,68,68,.1);color:#ff6b6b;border:1px solid rgba(255,68,68,.3);}
+.cat-news{background:rgba(255,95,31,.08);color:#ff5f1f;border:1px solid rgba(255,95,31,.2);}
+.row-actions{display:flex;gap:6px;}
+.action-btn{background:#131826;border:1px solid #1a2035;color:#6b7a9a;border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;}
+.action-btn.edit:hover{border-color:#4d9fff;color:#4d9fff;}
+.action-btn.del:hover{border-color:#ff4444;color:#ff4444;}
+.empty-state{padding:40px 20px;text-align:center;color:#4a5878;font-size:13px;}
+
+/* AI HELPER */
+.ai-panel{background:#0a1a0a;border:1px solid rgba(0,212,106,.2);border-radius:10px;padding:18px;margin-bottom:16px;}
+.ai-panel h3{font-size:13px;font-weight:700;margin-bottom:4px;color:#00d46a;}
+.ai-panel p{font-size:12px;color:#6b7a9a;margin-bottom:12px;line-height:1.5;}
+.ai-input{width:100%;background:#131826;border:1px solid #222d45;color:#e8ecf8;border-radius:8px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:13px;outline:none;margin-bottom:8px;}
+.ai-input:focus{border-color:#00d46a;}
+.ai-btn{background:#00d46a;color:#000;border:none;border-radius:6px;padding:8px 16px;font-family:'Inter',sans-serif;font-weight:700;font-size:13px;cursor:pointer;}
+.ai-result{background:#131826;border:1px solid #1a2035;border-radius:8px;padding:12px;font-size:13px;color:#e8ecf8;line-height:1.65;margin-top:10px;display:none;white-space:pre-wrap;}
+
+/* ARTICLE GUIDE */
+.guide-item{background:#131826;border:1px solid #1a2035;border-radius:8px;padding:14px;margin-bottom:10px;}
+.guide-item h4{font-size:13px;font-weight:700;color:#e8ecf8;margin-bottom:5px;}
+.guide-item p{font-size:12px;color:#6b7a9a;line-height:1.6;}
+.guide-item code{background:#0e1220;padding:1px 5px;border-radius:3px;font-size:11px;color:#ff5f1f;}
+
+@media(max-width:800px){
+  .compose-grid{grid-template-columns:1fr;}
+  .articles-table-hd{display:none;}
+  .article-row{grid-template-columns:1fr auto;}
+}
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo"><span>STUMP</span><em>ZONE</em></div>
+    <p class="login-sub">Admin Panel — Private Access Only</p>
+    <input class="input" type="password" id="pwd-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')login()">
+    <button class="btn-primary" onclick="login()">Sign In →</button>
+    <p class="err-msg" id="login-err"></p>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="admin-wrap" id="admin-wrap">
+  <div class="admin-header">
+    <div class="admin-logo"><span>STUMP</span><em>ZONE</em> <span style="color:#6b7a9a;font-size:12px;font-weight:400;margin-left:4px">Admin</span></div>
+    <div class="admin-nav">
+      <button class="tab active" onclick="switchTab('compose',this)">✏️ Write Article</button>
+      <button class="tab" onclick="switchTab('articles',this)">📋 All Articles</button>
+      <button class="tab" onclick="switchTab('guide',this)">📖 Writing Guide</button>
+      <a href="/" target="_blank" style="background:#131826;border:1px solid #1a2035;color:#6b7a9a;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:600;transition:all .15s;display:inline-block;">View Site ↗</a>
+    </div>
+  </div>
+
+  <div class="admin-content">
+
+    <!-- COMPOSE TAB -->
+    <div class="tab-panel active" id="tab-compose">
+      <div class="compose-grid">
+
+        <!-- LEFT: EDITOR -->
+        <div>
+          <div class="form-group">
+            <label>Article Title *</label>
+            <input class="form-input" id="f-title" type="text" placeholder="e.g. RR vs MI Match 13 Report: Jaiswal's 77* Seals Rain-Hit Victory" oninput="updatePreview()">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div class="form-group" style="margin:0">
+              <label>Category *</label>
+              <select class="form-select" id="f-cat" onchange="updatePreview()">
+                <option value="match">🏏 Match Report</option>
+                <option value="preview">📋 Match Preview</option>
+                <option value="analysis">📊 Analysis</option>
+                <option value="feature">⭐ Player Feature</option>
+                <option value="injury">🚑 Injury News</option>
+                <option value="news">📰 Cricket News</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin:0">
+              <label>Author</label>
+              <input class="form-input" id="f-author" type="text" value="StumpZone Staff" placeholder="Your name">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Article Excerpt (1-2 sentences — shown in card previews)</label>
+            <input class="form-input" id="f-excerpt" type="text" placeholder="A short engaging summary for the article card..." oninput="updatePreview()">
+          </div>
+
+          <div class="form-group">
+            <label>Article Body * — HTML supported. Use &lt;p&gt;, &lt;h2&gt;, &lt;h3&gt;, &lt;strong&gt;, &lt;blockquote&gt;</label>
+            <div class="toolbar">
+              <button class="tb-btn" onclick="ins('<p>','</p>')">¶ Para</button>
+              <button class="tb-btn" onclick="ins('<h2>','</h2>')">H2</button>
+              <button class="tb-btn" onclick="ins('<h3>','</h3>')">H3</button>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" onclick="ins('<strong>','</strong>')"><b>Bold</b></button>
+              <button class="tb-btn" onclick="ins('<em>','</em>')"><i>Italic</i></button>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" onclick="ins('<blockquote>','</blockquote>')">❝ Quote</button>
+              <button class="tb-btn" onclick="ins('<ul>\n<li>','</li>\n<li>item</li>\n</ul>')">List</button>
+              <div class="tb-sep"></div>
+              <button class="tb-btn" onclick="wrapTemplate()">📄 Template</button>
+            </div>
+            <textarea class="form-textarea" id="f-body" placeholder="Write your article here..." oninput="updateCharCount()" style="border-radius:0 0 8px 8px;"></textarea>
+            <div class="char-count"><span id="char-count">0</span> characters · <span id="word-count">0</span> words</div>
+          </div>
+
+          <input type="hidden" id="edit-id">
+          <div class="status-bar" id="pub-status"></div>
+        </div>
+
+        <!-- RIGHT: SIDEBAR -->
+        <div>
+          <!-- AI HELPER -->
+          <div class="ai-panel">
+            <h3>🤖 Ask Claude to Write For You</h3>
+            <p>Come to Claude chat and type:<br><strong>"Write a StumpZone article about [topic]"</strong><br>Copy the result and paste it in the body field.</p>
+          </div>
+
+          <!-- PREVIEW -->
+          <div class="side-panel">
+            <h3>Preview</h3>
+            <div class="preview-box" id="preview-box">
+              <span style="opacity:.5">Fill in title and excerpt above to see preview...</span>
+            </div>
+          </div>
+
+          <!-- PUBLISH -->
+          <div class="side-panel">
+            <h3>Publish</h3>
+            <button class="publish-btn" onclick="publishArticle()" id="pub-btn">
+              🚀 Publish Now
+            </button>
+            <button class="save-draft-btn" onclick="saveDraft()">💾 Save Draft</button>
+          </div>
+
+          <!-- SEO CHECKLIST -->
+          <div class="side-panel">
+            <h3>✅ Before You Publish</h3>
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:#6b7a9a;">
+              <div id="chk-title">⬜ Title is descriptive and specific</div>
+              <div id="chk-excerpt">⬜ Excerpt written (1-2 sentences)</div>
+              <div id="chk-body">⬜ Body has 300+ words</div>
+              <div id="chk-headings">⬜ Uses H2/H3 headings</div>
+              <div id="chk-links">⬜ Links to official sources</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARTICLES TAB -->
+    <div class="tab-panel" id="tab-articles">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+        <h2 style="font-size:18px;font-weight:700;">Published Articles</h2>
+        <button class="publish-btn" onclick="switchTab('compose',document.querySelector('.tab'))" style="width:auto;padding:8px 16px;font-size:13px;">✏️ Write New</button>
+      </div>
+      <div class="articles-table">
+        <div class="articles-table-hd">
+          <div>Title</div>
+          <div>Category</div>
+          <div>Published</div>
+          <div>Words</div>
+          <div>Actions</div>
+        </div>
+        <div id="articles-list"><div class="empty-state">Loading articles...</div></div>
+      </div>
+    </div>
+
+    <!-- GUIDE TAB -->
+    <div class="tab-panel" id="tab-guide">
+      <h2 style="font-size:18px;font-weight:700;margin-bottom:6px;">📖 How to Write Articles That Rank on Google</h2>
+      <p style="color:#6b7a9a;font-size:13px;margin-bottom:20px;">Follow these guidelines every day for AdSense approval and Google ranking.</p>
+
+      <div class="guide-item">
+        <h4>🎯 Write one article per day, minimum 400 words</h4>
+        <p>Google rewards fresh content. One article daily on IPL 2026 — match reports, previews, player features, squad news — is enough to get indexed and ranked. Quality beats quantity. 400-600 words is the sweet spot.</p>
+      </div>
+
+      <div class="guide-item">
+        <h4>📰 Article types that drive Google traffic</h4>
+        <p><strong>Match Previews (post the night before):</strong> "DC vs GT Match 14 Preview: Pitch Report, Probable XI, Head to Head" — these get searched the morning of every match.<br><br>
+        <strong>Match Reports (post within 1 hour of match):</strong> "RR beat MI by 27 runs: Jaiswal 77* Steers Rain-Hit Victory — Match 13 Report"<br><br>
+        <strong>Player Features:</strong> "Vaibhav Sooryavanshi: Why IPL 2026's 15-Year-Old Sensation Is Already Special"<br><br>
+        <strong>Analysis:</strong> "Why CSK Are Struggling: 3 Tactical Problems Sanju Samson Must Fix"</p>
+      </div>
+
+      <div class="guide-item">
+        <h4>✍️ Article structure that Google likes</h4>
+        <p>
+        <code>&lt;h2&gt;</code> Quick Match Summary (or main topic heading)<br>
+        2-3 paragraphs of original analysis<br>
+        <code>&lt;h2&gt;</code> Key Performances / Key Analysis<br>
+        2-3 more paragraphs<br>
+        <code>&lt;h2&gt;</code> What This Means / Looking Ahead<br>
+        1-2 concluding paragraphs<br><br>
+        Always link to <a href="https://www.iplt20.com">iplt20.com</a> for official stats — this signals credibility to Google.
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h4>🔑 Title formula that gets clicks</h4>
+        <p>
+        Match report: <strong>[Team] beat [Team] by [margin]: [Star player] [performance] — Match [N] Report</strong><br>
+        Example: "RR Beat MI by 27 Runs: Jaiswal's Unbeaten 77 Seals Rain-Hit Guwahati Thriller"<br><br>
+        Preview: <strong>[Team A] vs [Team B] Preview: Pitch Report, Probable XI and Key Battles — Match [N]</strong><br><br>
+        Feature: <strong>[Player Name]: [Compelling Angle] — [Why it Matters]</strong>
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h4>🚫 What NOT to do (AdSense rules)</h4>
+        <p>
+        ❌ Do NOT copy text from Cricbuzz or ESPNcricinfo — Google will detect it and penalise you<br>
+        ❌ Do NOT write less than 300 words — Google won't rank thin content<br>
+        ❌ Do NOT use click-bait titles that don't match the article<br>
+        ❌ Do NOT publish the same information twice under different titles<br>
+        ✅ Always write in your own words, from your own analysis<br>
+        ✅ Use facts (scores, names) but describe them in your own perspective
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h4>💡 How to use Claude to write your articles</h4>
+        <p>
+        Every morning, come to Claude and say:<br><br>
+        <em>"Write a 500-word StumpZone article about [today's match/topic]. Include match facts: [paste the scoreline]. Use a journalist tone. Include 2 H2 headings. End with a sentence about what to watch for next."</em><br><br>
+        Claude will write the full article. Copy it, paste in the body field, click Publish. Takes 5 minutes daily.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+'use strict';
+
+// ── AUTH ────────────────────────────────────────────────────────
+// Password is checked server-side via the Netlify function
+// We store it in sessionStorage so you don't retype each refresh
+let ADMIN_PWD = sessionStorage.getItem('sz_pwd') || '';
+if(ADMIN_PWD) showAdmin();
+
+function login(){
+  const pwd = document.getElementById('pwd-input').value.trim();
+  if(!pwd){ document.getElementById('login-err').textContent='Enter your password.'; return; }
+  // Quick server-side verify: try to fetch articles (passes any valid password)
+  fetch('/.netlify/functions/publish', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-admin-password':pwd},
+    body:JSON.stringify({title:'__ping__',body:'__ping__'})
+  }).then(r=>{
+    if(r.status===401){
+      document.getElementById('login-err').textContent='Wrong password. Try again.';
+    } else {
+      ADMIN_PWD = pwd;
+      sessionStorage.setItem('sz_pwd', pwd);
+      // Delete the test article if it got created
+      fetch('/.netlify/functions/publish',{method:'DELETE',headers:{'Content-Type':'application/json','x-admin-password':pwd},body:JSON.stringify({id:'__ping__'})}).catch(()=>{});
+      showAdmin();
+    }
+  }).catch(()=>{
+    // Can't reach server during dev — allow local preview
+    ADMIN_PWD = pwd;
+    sessionStorage.setItem('sz_pwd', pwd);
+    showAdmin();
+  });
+}
+
+function showAdmin(){
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('admin-wrap').style.display='block';
+  loadArticlesList();
+}
+
+// ── TABS ────────────────────────────────────────────────────────
+function switchTab(name, btn){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn?.classList.add('active');
+  if(name==='articles') loadArticlesList();
+}
+
+// ── EDITOR HELPERS ──────────────────────────────────────────────
+function ins(before, after){
+  const ta = document.getElementById('f-body');
+  const s = ta.selectionStart, e = ta.selectionEnd;
+  const sel = ta.value.substring(s,e);
+  ta.value = ta.value.substring(0,s) + before + sel + after + ta.value.substring(e);
+  ta.focus();
+  ta.selectionStart = ta.selectionEnd = s + before.length + sel.length + after.length;
+  updateCharCount();
+}
+
+function wrapTemplate(){
+  const title = document.getElementById('f-title').value || '[Article Title]';
+  const cat = document.getElementById('f-cat').value;
+  const templates = {
+    match: `<p>[Opening paragraph — set the scene. What happened? Who won? What was the key moment? 2-3 sentences.]</p>\n\n<h2>Match Summary</h2>\n<p>[Describe the match innings by innings. What was the top score? Who took wickets? Use the scoreline here.]</p>\n\n<h2>Key Performances</h2>\n<p>[Pick 2-3 standout players. Why were they important? What does this mean for their season?]</p>\n\n<h2>What This Means for the Points Table</h2>\n<p>[How does this result affect the standings? Which team benefits? Link to official table.]</p>\n\n<p>For the latest IPL 2026 standings, visit the <a href="https://www.iplt20.com/points-table/men" target="_blank" rel="noopener">official IPL points table</a>.</p>`,
+
+    preview: `<p>[Opening paragraph — why does this match matter? What's at stake for both teams? 2-3 sentences.]</p>\n\n<h2>Team Form & Recent Results</h2>\n<p>[How have both teams performed recently? Who's in form? Who's struggling?]</p>\n\n<h2>Key Battles to Watch</h2>\n<p>[Identify 2-3 individual player matchups that could decide the game. E.g. Jaiswal vs Bumrah.]</p>\n\n<h2>Probable XIs & Pitch Report</h2>\n<p>[List likely playing XI for both sides. What does the pitch historically favour — batters or bowlers?]</p>\n\n<p>Match starts at [TIME] IST. Watch live on <a href="https://www.hotstar.com/in/sports/cricket" target="_blank" rel="noopener">JioHotstar</a>.</p>`,
+
+    analysis: `<p>[Introduce the analytical topic in 2-3 sentences. State your main argument or observation clearly.]</p>\n\n<h2>[First Key Point]</h2>\n<p>[Support your argument with facts, statistics and examples from IPL 2026.]</p>\n\n<h2>[Second Key Point]</h2>\n<p>[Continue the analysis. Use comparisons, historical context or tactical observations.]</p>\n\n<h2>The Bigger Picture</h2>\n<p>[What does this analysis mean for the team/player/tournament going forward?]</p>`,
+
+    feature: `<p>[Hook sentence about the player — what makes them special? What have they done recently that demands attention?]</p>\n\n<h2>The Numbers That Tell the Story</h2>\n<p>[Specific stats — runs, strike rate, wickets, economy. Use precise figures to support your feature.]</p>\n\n<h2>The Making of [Player Name]</h2>\n<p>[Background — where did they come from? What's their journey to this moment?]</p>\n\n<h2>Why They Matter for IPL 2026</h2>\n<p>[Why should cricket fans pay attention? What could this player do for the rest of the tournament?]</p>`,
+  };
+  document.getElementById('f-body').value = templates[cat] || templates.match;
+  updateCharCount();
+}
+
+function updateCharCount(){
+  const body = document.getElementById('f-body').value;
+  const chars = body.length;
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  document.getElementById('char-count').textContent = chars.toLocaleString();
+  document.getElementById('word-count').textContent = words.toLocaleString();
+  updateChecklist(body, words);
+}
+
+function updateChecklist(body, words){
+  const title = document.getElementById('f-title').value;
+  const excerpt = document.getElementById('f-excerpt').value;
+  const set=(id,pass)=>{document.getElementById(id).textContent=(pass?'✅':'⬜')+' '+document.getElementById(id).textContent.slice(2);};
+  document.getElementById('chk-title').textContent = (title.length>20?'✅':'⬜') + ' Title is descriptive and specific';
+  document.getElementById('chk-excerpt').textContent = (excerpt.length>20?'✅':'⬜') + ' Excerpt written (1-2 sentences)';
+  document.getElementById('chk-body').textContent = (words>=300?'✅':'⬜') + ' Body has 300+ words ('+words+'/300)';
+  document.getElementById('chk-headings').textContent = (/<h[23]/i.test(body)?'✅':'⬜') + ' Uses H2/H3 headings';
+  document.getElementById('chk-links').textContent = (/<a /i.test(body)?'✅':'⬜') + ' Links to official sources';
+}
+
+function updatePreview(){
+  const title = document.getElementById('f-title').value;
+  const excerpt = document.getElementById('f-excerpt').value;
+  const cat = document.getElementById('f-cat').value;
+  const catEmojis = {match:'🏏',preview:'📋',analysis:'📊',feature:'⭐',injury:'🚑',news:'📰'};
+  const pb = document.getElementById('preview-box');
+  if(!title){ pb.innerHTML='<span style="opacity:.5">Fill in title above...</span>'; return; }
+  pb.innerHTML = `<div style="font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:7px;opacity:.7">${catEmojis[cat]||'📰'} ${cat.toUpperCase()}</div>
+    <div style="font-size:14px;font-weight:700;color:#e8ecf8;line-height:1.35;margin-bottom:6px">${title}</div>
+    <div style="font-size:12px;line-height:1.6">${excerpt||'<span style="opacity:.5">Add excerpt above...</span>'}</div>`;
+}
+
+// ── PUBLISH ─────────────────────────────────────────────────────
+async function publishArticle(){
+  const title = document.getElementById('f-title').value.trim();
+  const body = document.getElementById('f-body').value.trim();
+  const category = document.getElementById('f-cat').value;
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const author = document.getElementById('f-author').value.trim() || 'StumpZone Staff';
+  const editId = document.getElementById('edit-id').value;
+
+  if(!title){ showStatus('Title is required.','error'); return; }
+  if(!body || body.length < 50){ showStatus('Body is too short. Add more content.','error'); return; }
+
+  const btn = document.getElementById('pub-btn');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Publishing...';
+  showStatus('Publishing...','');
+
+  try{
+    const payload = { title, body, category, excerpt, author };
+    if(editId) payload.id = editId;
+
+    const res = await fetch('/.netlify/functions/publish', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json','x-admin-password':ADMIN_PWD},
+      body: JSON.stringify(payload)
+    });
+
+    const data = await res.json();
+
+    if(data.ok){
+      showStatus('✅ Published! Article is live on stumpzone.in', 'success');
+      clearForm();
+    } else {
+      showStatus('Error: '+(data.error||'Unknown error'), 'error');
+    }
+  }catch(e){
+    showStatus('Network error: '+e.message, 'error');
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '🚀 Publish Now';
+}
+
+function saveDraft(){
+  const data = {
+    title: document.getElementById('f-title').value,
+    body: document.getElementById('f-body').value,
+    category: document.getElementById('f-cat').value,
+    excerpt: document.getElementById('f-excerpt').value,
+    author: document.getElementById('f-author').value,
+  };
+  localStorage.setItem('sz_draft', JSON.stringify(data));
+  showStatus('💾 Draft saved to browser.','success');
+}
+
+function loadDraft(){
+  try{
+    const d = JSON.parse(localStorage.getItem('sz_draft')||'null');
+    if(!d) return;
+    document.getElementById('f-title').value = d.title||'';
+    document.getElementById('f-body').value = d.body||'';
+    document.getElementById('f-cat').value = d.category||'match';
+    document.getElementById('f-excerpt').value = d.excerpt||'';
+    document.getElementById('f-author').value = d.author||'StumpZone Staff';
+    updateCharCount();
+    updatePreview();
+    showStatus('Draft loaded.','success');
+  }catch{}
+}
+
+function clearForm(){
+  document.getElementById('f-title').value='';
+  document.getElementById('f-body').value='';
+  document.getElementById('f-cat').value='match';
+  document.getElementById('f-excerpt').value='';
+  document.getElementById('edit-id').value='';
+  updateCharCount();
+  updatePreview();
+  localStorage.removeItem('sz_draft');
+}
+
+function showStatus(msg, type){
+  const el = document.getElementById('pub-status');
+  el.textContent = msg;
+  el.className = 'status-bar show' + (type==='error'?' error':'');
+  if(type==='success') setTimeout(()=>el.classList.remove('show'), 4000);
+}
+
+// ── ARTICLES LIST ────────────────────────────────────────────────
+async function loadArticlesList(){
+  const el = document.getElementById('articles-list');
+  el.innerHTML = '<div class="empty-state">Loading...</div>';
+  try{
+    const res = await fetch('/.netlify/functions/articles');
+    const articles = await res.json();
+    if(!articles.length){
+      el.innerHTML = '<div class="empty-state">No articles yet — write your first one!</div>';
+      return;
+    }
+    const catCls = {match:'cat-match',preview:'cat-preview',analysis:'cat-analysis',feature:'cat-feature',injury:'cat-injury',news:'cat-news'};
+    el.innerHTML = articles.map(a=>{
+      const wc = a.body?.replace(/<[^>]+>/g,'').split(/\s+/).filter(Boolean).length||0;
+      return `<div class="article-row">
+        <div>
+          <div class="article-row-title">${a.title}<small>${a.excerpt?.slice(0,80)||''}</small></div>
+        </div>
+        <div><span class="article-cat ${catCls[a.category]||'cat-news'}">${a.category?.toUpperCase()||'NEWS'}</span></div>
+        <div style="font-size:12px;color:#6b7a9a">${new Date(a.publishedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div>
+        <div style="font-size:12px;color:#6b7a9a">${wc} words</div>
+        <div class="row-actions">
+          <button class="action-btn edit" onclick="editArticle('${a.id}')">Edit</button>
+          <button class="action-btn del" onclick="deleteArticle('${a.id}','${a.title.slice(0,30).replace(/'/g,"\\'")}')">Del</button>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){
+    el.innerHTML = `<div class="empty-state">Could not load articles: ${e.message}</div>`;
+  }
+}
+
+async function editArticle(id){
+  try{
+    const res = await fetch('/.netlify/functions/articles');
+    const articles = await res.json();
+    const a = articles.find(x=>x.id===id);
+    if(!a) return;
+    document.getElementById('f-title').value = a.title||'';
+    document.getElementById('f-body').value = a.body||'';
+    document.getElementById('f-cat').value = a.category||'match';
+    document.getElementById('f-excerpt').value = a.excerpt||'';
+    document.getElementById('f-author').value = a.author||'StumpZone Staff';
+    document.getElementById('edit-id').value = a.id;
+    updateCharCount(); updatePreview();
+    switchTab('compose', document.querySelector('.tab'));
+    showStatus('Article loaded for editing. Make changes and click Publish to update.','success');
+    window.scrollTo(0,0);
+  }catch(e){ alert('Error loading article: '+e.message); }
+}
+
+async function deleteArticle(id, title){
+  if(!confirm(`Delete "${title}..."?\n\nThis cannot be undone.`)) return;
+  try{
+    const res = await fetch('/.netlify/functions/publish', {
+      method:'DELETE',
+      headers:{'Content-Type':'application/json','x-admin-password':ADMIN_PWD},
+      body:JSON.stringify({id})
+    });
+    const data = await res.json();
+    if(data.ok){ loadArticlesList(); }
+    else{ alert('Error: '+data.error); }
+  }catch(e){ alert('Error: '+e.message); }
+}
+
+// Load draft on page open if exists
+window.addEventListener('load',()=>{
+  if(ADMIN_PWD && localStorage.getItem('sz_draft')){
+    if(confirm('You have a saved draft. Load it?')) loadDraft();
+  }
+  updateChecklist('',0);
+});
+</script>
+</body>
+</html>
