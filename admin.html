@@ -173,8 +173,8 @@ a{color:#ff5f1f;text-decoration:none;}
           </div>
 
           <div class="form-group">
-            <label>Article Excerpt (1-2 sentences — shown in card previews)</label>
-            <input class="form-input" id="f-excerpt" type="text" placeholder="A short engaging summary for the article card..." oninput="updatePreview()">
+            <label>Article Summary (1-2 sentences — shown in article card previews)</label>
+            <input class="form-input" id="f-excerpt" type="text" placeholder="A short 1-2 sentence summary shown on the article card..." oninput="updatePreview()">
           </div>
 
           <div class="form-group">
@@ -212,7 +212,7 @@ a{color:#ff5f1f;text-decoration:none;}
           <div class="side-panel">
             <h3>Preview</h3>
             <div class="preview-box" id="preview-box">
-              <span style="opacity:.5">Fill in title and excerpt above to see preview...</span>
+              <span style="opacity:.5">Fill in title and summary above to see preview...</span>
             </div>
           </div>
 
@@ -230,7 +230,7 @@ a{color:#ff5f1f;text-decoration:none;}
             <h3>✅ Before You Publish</h3>
             <div style="display:flex;flex-direction:column;gap:8px;font-size:12px;color:#6b7a9a;">
               <div id="chk-title">⬜ Title is descriptive and specific</div>
-              <div id="chk-excerpt">⬜ Excerpt written (1-2 sentences)</div>
+              <div id="chk-excerpt">⬜ Summary written (1-2 sentences)</div>
               <div id="chk-body">⬜ Body has 300+ words</div>
               <div id="chk-headings">⬜ Uses H2/H3 headings</div>
               <div id="chk-links">⬜ Links to official sources</div>
@@ -415,7 +415,7 @@ function updateChecklist(body, words){
   const excerpt = document.getElementById('f-excerpt').value;
   const set=(id,pass)=>{document.getElementById(id).textContent=(pass?'✅':'⬜')+' '+document.getElementById(id).textContent.slice(2);};
   document.getElementById('chk-title').textContent = (title.length>20?'✅':'⬜') + ' Title is descriptive and specific';
-  document.getElementById('chk-excerpt').textContent = (excerpt.length>20?'✅':'⬜') + ' Excerpt written (1-2 sentences)';
+  document.getElementById('chk-excerpt').textContent = (excerpt.length>20?'✅':'⬜') + ' Summary written (1-2 sentences)';
   document.getElementById('chk-body').textContent = (words>=300?'✅':'⬜') + ' Body has 300+ words ('+words+'/300)';
   document.getElementById('chk-headings').textContent = (/<h[23]/i.test(body)?'✅':'⬜') + ' Uses H2/H3 headings';
   document.getElementById('chk-links').textContent = (/<a /i.test(body)?'✅':'⬜') + ' Links to official sources';
@@ -430,7 +430,7 @@ function updatePreview(){
   if(!title){ pb.innerHTML='<span style="opacity:.5">Fill in title above...</span>'; return; }
   pb.innerHTML = `<div style="font-size:9px;font-weight:700;letter-spacing:1px;margin-bottom:7px;opacity:.7">${catEmojis[cat]||'📰'} ${cat.toUpperCase()}</div>
     <div style="font-size:14px;font-weight:700;color:#e8ecf8;line-height:1.35;margin-bottom:6px">${title}</div>
-    <div style="font-size:12px;line-height:1.6">${excerpt||'<span style="opacity:.5">Add excerpt above...</span>'}</div>`;
+    <div style="font-size:12px;line-height:1.6">${excerpt||'<span style="opacity:.5">Add summary above...</span>'}</div>`;
 }
 
 // ── PUBLISH ─────────────────────────────────────────────────────
