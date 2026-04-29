@@ -91,56 +91,73 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 .articles{display:flex;flex-direction:column;gap:0;}
 
 /* FEATURED CARD */
-.card-featured{background:#fff;border:2px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:12px;transition:all .2s;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06);}
-.card-featured:hover{border-color:var(--orange);box-shadow:0 6px 16px rgba(255,87,34,.15);transform:translateY(-2px);}
-.card-featured-img{
-  background:linear-gradient(135deg, #ff5722 0%, #ff8a65 100%);
-  height:280px;
+.card-featured{
+  background:#fff;
+  border:2px solid var(--border);
+  border-left:6px solid var(--orange);
+  border-radius:var(--r);
+  overflow:hidden;
+  margin-bottom:12px;
+  padding:32px;
+  transition:all .2s;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+.card-featured:hover{
+  border-left-color:#d84315;
+  box-shadow:0 6px 20px rgba(255,87,34,.12);
+  transform:translateY(-2px);
+}
+.card-featured-img{display:none;} /* Remove the large image area */
+.card-featured-category-overlay{display:none;}
+.card-featured-body{padding:0;}
+.card-featured-body .tag{margin-bottom:14px;}
+.card-featured-title{
+  font-size:32px;
+  font-weight:800;
+  line-height:1.25;
+  margin-bottom:16px;
+  color:var(--text);
+}
+.card-featured-excerpt{
+  font-size:17px;
+  color:var(--muted2);
+  line-height:1.7;
+  margin-bottom:16px;
+}
+.card-featured-meta{
+  font-size:14px;
+  color:var(--muted);
   display:flex;
   align-items:center;
-  justify-content:center;
-  position:relative;
-  overflow:hidden;
+  gap:10px;
+  flex-wrap:wrap;
+  padding-top:12px;
+  border-top:1px solid var(--border);
 }
-.card-featured-img::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  background-image:
-    repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,.03) 20px, rgba(255,255,255,.03) 40px),
-    repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(255,255,255,.03) 20px, rgba(255,255,255,.03) 40px);
-  opacity:.5;
-}
-.card-featured-img::after{
-  content:'🏏';
-  position:absolute;
-  font-size:120px;
-  opacity:.15;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%) rotate(-15deg);
-}
-.card-featured-category-overlay{
-  position:absolute;
-  top:20px;
-  left:20px;
-  z-index:2;
-}
-.card-featured-body{padding:28px 24px;}
-.card-featured-body .tag{margin-bottom:12px;}
-.card-featured-title{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:14px;color:var(--text);}
-.card-featured-excerpt{font-size:17px;color:var(--muted2);line-height:1.7;margin-bottom:14px;}
-.card-featured-meta{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
 
 /* LIST CARD */
-.card-list{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.card-list{
+  display:flex;
+  gap:18px;
+  padding:20px 0;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  transition:all .2s;
+}
 .card-list:last-child{border-bottom:none;}
-.card-list:hover{background:var(--card);margin:0 -16px;padding-left:16px;padding-right:16px;border-radius:var(--r2);}
+.card-list:hover{
+  background:var(--card);
+  margin:0 -16px;
+  padding-left:16px;
+  padding-right:16px;
+  border-radius:var(--r2);
+}
 .card-list-img{
-  width:140px;
-  height:95px;
-  border-radius:10px;
-  background:linear-gradient(135deg, #ff6b35 0%, #ffa07a 100%);
+  width:120px;
+  height:80px;
+  border-radius:8px;
+  background:linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
   flex-shrink:0;
   display:flex;
   align-items:center;
@@ -150,25 +167,42 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
   border:2px solid var(--border);
 }
 .card-list-img::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  background-image:
-    repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,.05) 10px, rgba(255,255,255,.05) 20px);
-  opacity:.6;
-}
-.card-list-img::after{
   content:'🏏';
-  font-size:36px;
-  opacity:.25;
-  position:relative;
-  z-index:1;
+  font-size:32px;
+  opacity:.2;
 }
-.card-list-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
+.card-list-body{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
 .card-list-body .tag{margin-bottom:8px;}
-.card-list-title{font-size:18px;font-weight:700;line-height:1.35;margin-bottom:8px;color:var(--text);}
-.card-list-meta{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px;}
-.card-list-excerpt{font-size:15px;color:var(--muted2);line-height:1.6;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-list-title{
+  font-size:19px;
+  font-weight:700;
+  line-height:1.35;
+  margin-bottom:8px;
+  color:var(--text);
+}
+.card-list-meta{
+  font-size:14px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.card-list-excerpt{
+  font-size:15px;
+  color:var(--muted2);
+  line-height:1.6;
+  margin-top:8px;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
 
 /* ARTICLE READING VIEW */
 .article-view{max-width:780px;margin:0 auto;padding:36px 24px 80px;}
@@ -220,39 +254,55 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 .qlink-sub{font-size:13px;color:var(--muted);}
 .qlink-arr{margin-left:auto;color:var(--muted);font-size:14px;flex-shrink:0;}
 .sidebar-articles{display:flex;flex-direction:column;gap:0;}
-.sidebar-card{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.sidebar-card{
+  display:flex;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid var(--border);
+  cursor:pointer;
+  transition:all .2s;
+}
 .sidebar-card:last-child{border-bottom:none;}
-.sidebar-card:hover{background:var(--card);margin:0 -10px;padding-left:10px;padding-right:10px;border-radius:var(--r2);}
+.sidebar-card:hover{
+  background:var(--card);
+  margin:0 -10px;
+  padding-left:10px;
+  padding-right:10px;
+  border-radius:var(--r2);
+}
 .sidebar-card-img{
-  width:80px;
-  height:60px;
-  border-radius:8px;
-  background:linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%);
+  width:70px;
+  height:52px;
+  border-radius:6px;
+  background:linear-gradient(135deg, #10b981 0%, #34d399 100%);
   flex-shrink:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  position:relative;
-  overflow:hidden;
   border:2px solid var(--border);
 }
 .sidebar-card-img::before{
-  content:'';
-  position:absolute;
-  top:0;left:0;right:0;bottom:0;
-  background-image:
-    repeating-linear-gradient(45deg, transparent, transparent 8px, rgba(255,255,255,.08) 8px, rgba(255,255,255,.08) 16px);
-}
-.sidebar-card-img::after{
   content:'🏏';
-  font-size:24px;
-  opacity:.3;
-  position:relative;
-  z-index:1;
+  font-size:20px;
+  opacity:.25;
 }
-.sidebar-card-body{flex:1;display:flex;flex-direction:column;justify-content:center;}
-.sidebar-card-title{font-size:14px;font-weight:700;line-height:1.4;color:var(--text);margin-bottom:4px;}
-.sidebar-card-meta{font-size:12px;color:var(--muted);}
+.sidebar-card-body{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.sidebar-card-title{
+  font-size:14px;
+  font-weight:700;
+  line-height:1.4;
+  color:var(--text);
+  margin-bottom:4px;
+}
+.sidebar-card-meta{
+  font-size:12px;
+  color:var(--muted);
+}
 
 /* QUIZ */
 .qcard{background:var(--card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;}
@@ -347,12 +397,12 @@ footer{background:#090c18;border-top:1px solid var(--border);padding:32px 24px 1
 
 <!-- TICKER -->
 <div class="ticker"><div class="ticker-inner">
-  <div class="tlbl">🏏 IPL 26</div>
+  <div class="tlbl">🏏 CRICKET</div>
   <div class="tscroll"><div class="ttrack" id="ticker">
-    <span>Welcome to StumpZone — Original IPL 2026 cricket news, match analysis and daily quiz</span>
-    <span>RR lead IPL 2026 standings with 6 points from 3 wins · M14: DC vs GT today at 7:30 PM IST</span>
-    <span>Welcome to StumpZone — Original IPL 2026 cricket news, match analysis and daily quiz</span>
-    <span>RR lead IPL 2026 standings with 6 points from 3 wins · M14: DC vs GT today at 7:30 PM IST</span>
+    <span>Welcome to StumpZone — Original cricket news, match analysis and daily quiz</span>
+    <span>Latest scores · Live updates · In-depth analysis · Player features</span>
+    <span>Welcome to StumpZone — Original cricket news, match analysis and daily quiz</span>
+    <span>Latest scores · Live updates · In-depth analysis · Player features</span>
   </div></div>
 </div></div>
 
@@ -372,9 +422,9 @@ footer{background:#090c18;border-top:1px solid var(--border);padding:32px 24px 1
 <div class="page active" id="page-home">
 <section class="hero">
   <div class="hero-inner">
-    <div class="hero-tag">IPL 2026 · MATCH ANALYSIS · PLAYER FEATURES · DAILY QUIZ</div>
+    <div class="hero-tag">CRICKET NEWS · MATCH ANALYSIS · PLAYER FEATURES · DAILY QUIZ</div>
     <h1 class="hero-title">STUMP<span>ZONE</span><em>CRICKET HUB</em></h1>
-    <p class="hero-sub">In-depth IPL 2026 match analysis, player features, match previews and original cricket journalism — written by cricket fans, for cricket fans. Updated every day.</p>
+    <p class="hero-sub">In-depth cricket match analysis, player features, match previews and original cricket journalism — written by cricket fans, for cricket fans. Updated every day.</p>
     <div class="hero-cats" id="home-cats">
       <button class="cat active" onclick="setCat('all',this)">All</button>
       <button class="cat" onclick="setCat('match',this)">🏏 Match Reports</button>
@@ -724,7 +774,7 @@ function openArticle(id){
       <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:center;">
         <span style="font-size:13px;color:var(--muted2);">Share this article:</span>
         <a href="https://wa.me/?text=${encodeURIComponent(a.title+' — Read on StumpZone: https://stumpzone.in')}" target="_blank" rel="noopener" style="background:#25d366;color:#fff;font-family:Rajdhani,sans-serif;font-weight:700;font-size:12px;padding:6px 12px;border-radius:6px;">WhatsApp</a>
-        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(a.title)}&url=https://stumpzone.in" target="_blank" rel="noopener" style="background:#1da1f2;color:#fff;font-family:Rajdhani,sans-serif;font-weight:700;font-size:12px;padding:6px 12px;border-radius:6px;">Twitter</a>
+        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(a.title)}&url=https://stumpzone.in" target="_blank" rel="noopener" style="background:#000;color:#fff;font-family:Inter,sans-serif;font-weight:700;font-size:12px;padding:6px 12px;border-radius:6px;">𝕏 Share</a>
       </div>
     </div>`;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
