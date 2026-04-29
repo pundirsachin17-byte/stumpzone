@@ -337,7 +337,7 @@ function login(){
   const pwd = document.getElementById('pwd-input').value.trim();
   if(!pwd){ document.getElementById('login-err').textContent='Enter your password.'; return; }
   // Quick server-side verify: try to fetch articles (passes any valid password)
-  fetch('/.netlify/functions/publish', {
+  fetch('/api/publish', {
     method:'POST',
     headers:{'Content-Type':'application/json','x-admin-password':pwd},
     body:JSON.stringify({title:'__ping__',body:'__ping__'})
@@ -348,7 +348,7 @@ function login(){
       ADMIN_PWD = pwd;
       sessionStorage.setItem('sz_pwd', pwd);
       // Delete the test article if it got created
-      fetch('/.netlify/functions/publish',{method:'DELETE',headers:{'Content-Type':'application/json','x-admin-password':pwd},body:JSON.stringify({id:'__ping__'})}).catch(()=>{});
+      fetch('/api/publish',{method:'DELETE',headers:{'Content-Type':'application/json','x-admin-password':pwd},body:JSON.stringify({id:'__ping__'})}).catch(()=>{});
       showAdmin();
     }
   }).catch(()=>{
@@ -454,7 +454,7 @@ async function publishArticle(){
     const payload = { title, body, category, excerpt, author };
     if(editId) payload.id = editId;
 
-    const res = await fetch('/.netlify/functions/publish', {
+    const res = await fetch('/api/publish', {
       method: 'POST',
       headers: {'Content-Type':'application/json','x-admin-password':ADMIN_PWD},
       body: JSON.stringify(payload)
@@ -526,7 +526,7 @@ async function loadArticlesList(){
   const el = document.getElementById('articles-list');
   el.innerHTML = '<div class="empty-state">Loading...</div>';
   try{
-    const res = await fetch('/.netlify/functions/articles');
+    const res = await fetch('/api/articles');
     const articles = await res.json();
     if(!articles.length){
       el.innerHTML = '<div class="empty-state">No articles yet — write your first one!</div>';
@@ -555,7 +555,7 @@ async function loadArticlesList(){
 
 async function editArticle(id){
   try{
-    const res = await fetch('/.netlify/functions/articles');
+    const res = await fetch('/api/articles');
     const articles = await res.json();
     const a = articles.find(x=>x.id===id);
     if(!a) return;
@@ -575,7 +575,7 @@ async function editArticle(id){
 async function deleteArticle(id, title){
   if(!confirm(`Delete "${title}..."?\n\nThis cannot be undone.`)) return;
   try{
-    const res = await fetch('/.netlify/functions/publish', {
+    const res = await fetch('/api/publish', {
       method:'DELETE',
       headers:{'Content-Type':'application/json','x-admin-password':ADMIN_PWD},
       body:JSON.stringify({id})
