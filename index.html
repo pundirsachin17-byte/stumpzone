@@ -728,7 +728,7 @@ async function loadArticles(){
     ${[1,2,3].map(()=>`<div class="skel-list-item skel"><div class="skel-thumb"></div><div class="skel-list-body"><div class="skel-line w30" style="height:10px"></div><div class="skel-line w90" style="height:12px"></div><div class="skel-line w50" style="height:10px"></div></div></div>`).join('')}`;
 
   try{
-    const res = await fetch('/.netlify/functions/articles');
+    const res = await fetch('/api/articles');
     if(!res.ok) throw new Error('fetch failed');
     const data = await res.json();
     allArticles = Array.isArray(data) ? data : [];
