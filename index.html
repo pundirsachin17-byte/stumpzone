@@ -768,7 +768,7 @@ function openArticle(id){
   const tg = getTag(a.category);
   document.getElementById('article-content').innerHTML = `
     <div class="article-view">
-      <button class="article-back" onclick="history.back()">← Back</button>
+      <button class="article-back" onclick="if(document.referrer && document.referrer.includes('stumpzone.in')){history.back()}else{window.location.href='/'}">← Back</button>
       <div class="article-header">
         <span class="tag ${tg.cls}">${tg.label}</span>
         <h1 class="article-title">${a.title}</h1>
