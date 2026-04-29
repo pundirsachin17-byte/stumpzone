@@ -539,8 +539,8 @@ footer{background:#fafafa;border-top:2px solid var(--border);padding:40px 24px 2
 <div class="page" id="page-faq">
   <div class="phero"><div class="phero-inner">
     <div class="ptag">CRICKET EXPLAINED</div>
-    <h1 class="ptitle">IPL 2026 <em>FAQ</em></h1>
-    <p class="psub">Everything you need to know about IPL 2026.</p>
+    <h1 class="ptitle">Cricket <em>FAQ</em></h1>
+    <p class="psub">Everything you need to know about cricket formats, rules, tournaments and terminology.</p>
   </div></div>
   <div class="pbody" style="max-width:760px;">
     <button class="backbtn" onclick="goPage('home')">← Home</button>
@@ -984,14 +984,14 @@ function endPQ(){
 
 // ── FAQ ────────────────────────────────────────────────────────
 const FAQS=[
-  {q:'Who leads the IPL 2026 points table?',a:'Rajasthan Royals (RR) lead with 6 points — 3 wins from 3 matches. For live standings visit the <a href="https://www.iplt20.com/points-table/men" target="_blank" rel="noopener" style="color:var(--orange)">official IPL table</a>.'},
-  {q:'Who won IPL 2025?',a:'Royal Challengers Bengaluru (RCB) won their first-ever IPL title in 2025. They are defending champions in IPL 2026.'},
-  {q:'When is the IPL 2026 Final?',a:'May 31, 2026 in Bengaluru.'},
-  {q:'How to watch IPL 2026?',a:'Star Sports (TV) and JioHotstar (digital) in India. Willow TV for North America. Sky Sports in the UK.'},
-  {q:'What happened in RR vs MI (Match 13)?',a:'RR won by 27 runs in a D/L rain-curtailed 11-over match in Guwahati. Jaiswal 77*(32), Sooryavanshi 39(11) including two sixes off Bumrah.'},
-  {q:'What is NRR?',a:'Net Run Rate = (runs scored ÷ overs faced) minus (runs conceded ÷ overs bowled). It\'s the tiebreaker when teams are level on points.'},
-  {q:'How do IPL 2026 playoffs work?',a:'Top 4 teams qualify. Q1 (1st vs 2nd) — winner goes to Final. Eliminator (3rd vs 4th). Q2 — second finalist. Final: May 31.'},
-  {q:'Who is the most expensive IPL 2026 player?',a:'Cameron Green (KKR) — ₹25.20 crore, a record for any overseas player in IPL history.'},
+  {q:'What is the IPL?',a:'The Indian Premier League (IPL) is a professional Twenty20 cricket league in India. Founded in 2008, it features 10 franchise teams representing different cities. The IPL is one of the most-watched cricket leagues globally, running annually from March to May.'},
+  {q:'What are the different formats of cricket?',a:'Cricket has three main formats: <strong>Test</strong> (5 days, unlimited overs), <strong>ODI</strong> (One Day International, 50 overs per side), and <strong>T20</strong> (Twenty20, 20 overs per side). Test cricket is the longest and most traditional format, while T20 is the fastest and most explosive.'},
+  {q:'What is a Test match?',a:'Test cricket is the longest format, played over 5 days with unlimited overs. Each team gets two innings. It\'s considered the purest form of cricket, testing players\' endurance, technique, and mental strength. Famous Test series include the Ashes (England vs Australia) and Border-Gavaskar Trophy (India vs Australia).'},
+  {q:'What is the ICC Cricket World Cup?',a:'The ICC Cricket World Cup is the premier international championship of One Day International (ODI) cricket. Held every four years since 1975, it features teams from around the world competing for the sport\'s most prestigious trophy. India has won the World Cup in 1983, 2011, and 2023.'},
+  {q:'What is the difference between ODI and T20?',a:'<strong>ODI</strong> (One Day International): 50 overs per side, lasts 7-8 hours, focuses on building innings. <strong>T20</strong>: 20 overs per side, lasts 3 hours, focuses on aggressive hitting and fast scoring. T20 is more explosive, ODI is more strategic.'},
+  {q:'What is NRR (Net Run Rate)?',a:'Net Run Rate = (runs scored ÷ overs faced) minus (runs conceded ÷ overs bowled). It\'s the tiebreaker when teams finish on equal points in tournaments. A higher NRR means you score faster than your opponents or restrict them better.'},
+  {q:'What is the Powerplay in cricket?',a:'The Powerplay is the first 6 overs in T20 and first 10 overs in ODI, where fielding restrictions apply. Only 2 fielders are allowed outside the 30-yard circle during this phase, encouraging aggressive batting and making it easier to score boundaries.'},
+  {q:'What is DRS (Decision Review System)?',a:'DRS allows teams to challenge umpire decisions using technology. Each team gets 2 reviews per innings in T20, 2 per innings in ODI, and 3 per innings in Tests. Technologies used include Hawk-Eye (ball tracking), UltraEdge (edge detection), and Hot Spot (thermal imaging).'},
 ];
 function renderFAQ(){
   const c=document.getElementById('faq-box');
