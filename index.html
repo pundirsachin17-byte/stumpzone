@@ -102,36 +102,54 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 .card-featured{
   background:#fff;
   border:2px solid var(--border);
-  border-left:6px solid var(--orange);
   border-radius:var(--r);
   overflow:hidden;
   margin-bottom:12px;
-  padding:32px;
   transition:all .2s;
   cursor:pointer;
   box-shadow:0 2px 8px rgba(0,0,0,.06);
 }
 .card-featured:hover{
-  border-left-color:#d84315;
+  border-color:var(--orange);
   box-shadow:0 6px 20px rgba(255,87,34,.12);
   transform:translateY(-2px);
 }
-.card-featured-img{display:none;} /* Remove the large image area */
-.card-featured-category-overlay{display:none;}
-.card-featured-body{padding:0;}
-.card-featured-body .tag{margin-bottom:14px;}
+.card-featured-img{
+  height:280px;
+  background-size:cover;
+  background-position:center;
+  border-bottom:2px solid var(--border);
+  position:relative;
+}
+.card-featured-img::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:80px;
+  background:linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+}
+.card-featured-category-overlay{
+  position:absolute;
+  top:20px;
+  left:20px;
+  z-index:2;
+}
+.card-featured-body{padding:28px 24px;}
+.card-featured-body .tag{margin-bottom:12px;}
 .card-featured-title{
-  font-size:32px;
+  font-size:28px;
   font-weight:800;
   line-height:1.25;
-  margin-bottom:16px;
+  margin-bottom:14px;
   color:var(--text);
 }
 .card-featured-excerpt{
   font-size:17px;
   color:var(--muted2);
   line-height:1.7;
-  margin-bottom:16px;
+  margin-bottom:14px;
 }
 .card-featured-meta{
   font-size:14px;
@@ -147,25 +165,28 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 /* LIST CARD */
 .card-list{
   display:flex;
-  gap:0;
-  padding:20px 0 20px 16px;
+  gap:18px;
+  padding:20px 0;
   border-bottom:1px solid var(--border);
-  border-left:3px solid transparent;
   cursor:pointer;
   transition:all .2s;
-  margin-left:-16px;
 }
 .card-list:last-child{border-bottom:none;}
 .card-list:hover{
   background:var(--card);
-  border-left-color:var(--orange);
   margin:0 -16px;
-  padding-left:13px;
+  padding-left:16px;
   padding-right:16px;
   border-radius:var(--r2);
 }
 .card-list-img{
-  display:none; /* Hide thumbnails completely for clean text-first design */
+  width:160px;
+  height:110px;
+  border-radius:8px;
+  flex-shrink:0;
+  background-size:cover;
+  background-position:center;
+  border:2px solid var(--border);
 }
 .card-list-body{
   flex:1;
@@ -176,7 +197,7 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 }
 .card-list-body .tag{margin-bottom:8px;}
 .card-list-title{
-  font-size:20px;
+  font-size:19px;
   font-weight:700;
   line-height:1.35;
   margin-bottom:8px;
@@ -252,7 +273,7 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 .sidebar-articles{display:flex;flex-direction:column;gap:0;}
 .sidebar-card{
   display:flex;
-  gap:0;
+  gap:12px;
   padding:14px 0;
   border-bottom:1px solid var(--border);
   cursor:pointer;
@@ -267,7 +288,13 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
   border-radius:var(--r2);
 }
 .sidebar-card-img{
-  display:none; /* Hide thumbnails for clean design */
+  width:90px;
+  height:65px;
+  border-radius:6px;
+  flex-shrink:0;
+  background-size:cover;
+  background-position:center;
+  border:2px solid var(--border);
 }
 .sidebar-card-body{
   flex:1;
@@ -276,11 +303,11 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
   justify-content:center;
 }
 .sidebar-card-title{
-  font-size:15px;
+  font-size:14px;
   font-weight:700;
   line-height:1.4;
   color:var(--text);
-  margin-bottom:6px;
+  margin-bottom:4px;
 }
 .sidebar-card-meta{
   font-size:12px;
@@ -324,11 +351,11 @@ nav{position:sticky;top:0;z-index:300;background:rgba(255,255,255,.98);backdrop-
 .phero{background:linear-gradient(135deg,#050810,#0c0f1e);padding:28px 24px 20px;border-bottom:1px solid var(--border);}
 .phero-inner{max-width:900px;margin:0 auto;}
 .ptag{font-family:'Rajdhani',sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;color:var(--orange);margin-bottom:4px;}
-.ptitle{font-family:'Bebas Neue',cursive;font-size:clamp(30px,5vw,52px);line-height:1;margin-bottom:5px;}
+.ptitle{font-family:'Bebas Neue',cursive;font-size:clamp(30px,5vw,52px);line-height:1;margin-bottom:5px;color:#ffffff;}
 .ptitle em{color:var(--orange);font-style:normal;}
-.psub{font-size:13px;color:var(--muted2);}
+.psub{font-size:13px;color:#9ca3af;}
 .pbody{max-width:900px;margin:0 auto;padding:22px 24px 80px;}
-.backbtn{display:inline-flex;align-items:center;gap:5px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:var(--muted2);background:var(--card);border:1px solid var(--border);border-radius:var(--r2);padding:5px 12px;cursor:pointer;transition:all .15s;margin-bottom:18px;}
+.backbtn{display:inline-flex;align-items:center;gap:5px;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:12px;color:#9ca3af;background:#131826;border:1px solid #1a2035;border-radius:var(--r2);padding:5px 12px;cursor:pointer;transition:all .15s;margin-bottom:18px;}
 .backbtn:hover{color:var(--orange);border-color:var(--orange);}
 
 /* CONTENT BLOCK */
@@ -691,10 +718,10 @@ function timeAgo(d){
   }catch{return 'Recently';}
 }
 
+// Generate unique cricket image URL from Unsplash
 function featuredCard(a){
   const tg=getTag(a.category);
   return `<div class="card-featured" onclick="openArticle('${a.id}')">
-    <div class="card-featured-img">${tg.emoji}</div>
     <div class="card-featured-body">
       <span class="tag ${tg.cls}">${tg.label}</span>
       <div class="card-featured-title">${a.title}</div>
@@ -711,7 +738,6 @@ function featuredCard(a){
 function listCard(a){
   const tg=getTag(a.category);
   return `<div class="card-list" onclick="openArticle('${a.id}')">
-    <div class="card-list-img">${tg.emoji}</div>
     <div class="card-list-body">
       <span class="tag ${tg.cls}">${tg.label}</span>
       <div class="card-list-title">${a.title}</div>
@@ -727,8 +753,7 @@ function listCard(a){
 function sidebarCard(a){
   const tg=getTag(a.category);
   return `<div class="sidebar-card" onclick="openArticle('${a.id}')">
-    <div class="sidebar-card-img">${tg.emoji}</div>
-    <div>
+    <div class="sidebar-card-body">
       <div class="sidebar-card-title">${a.title}</div>
       <div class="sidebar-card-meta">${timeAgo(a.publishedAt)}</div>
     </div>
