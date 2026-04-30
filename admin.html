@@ -336,19 +336,16 @@ if(ADMIN_PWD) showAdmin();
 function login(){
   const pwd = document.getElementById('pwd-input').value.trim();
   if(!pwd){ document.getElementById('login-err').textContent='Enter your password.'; return; }
-  // Quick server-side verify: try to fetch articles (passes any valid password)
-  fetch('/api/publish', {
-    method:'POST',
-    headers:{'Content-Type':'application/json','x-admin-password':pwd},
-    body:JSON.stringify({title:'__ping__',body:'__ping__'})
+  // Verify password by trying to fetch articles (no test article creation)
+  fetch('/api/articles', {
+    method:'GET',
+    headers:{'x-admin-password':pwd}
   }).then(r=>{
     if(r.status===401){
       document.getElementById('login-err').textContent='Wrong password. Try again.';
     } else {
       ADMIN_PWD = pwd;
       sessionStorage.setItem('sz_pwd', pwd);
-      // Delete the test article if it got created
-      fetch('/api/publish',{method:'DELETE',headers:{'Content-Type':'application/json','x-admin-password':pwd},body:JSON.stringify({id:'__ping__'})}).catch(()=>{});
       showAdmin();
     }
   }).catch(()=>{
@@ -527,7 +524,8 @@ async function loadArticlesList(){
   el.innerHTML = '<div class="empty-state">Loading...</div>';
   try{
     const res = await fetch('/api/articles');
-    const articles = await res.json();
+    let articles = await res.json();
+    // Articles loaded successfully
     if(!articles.length){
       el.innerHTML = '<div class="empty-state">No articles yet — write your first one!</div>';
       return;
@@ -556,7 +554,7 @@ async function loadArticlesList(){
 async function editArticle(id){
   try{
     const res = await fetch('/api/articles');
-    const articles = await res.json();
+    let articles = await res.json();
     const a = articles.find(x=>x.id===id);
     if(!a) return;
     document.getElementById('f-title').value = a.title||'';
