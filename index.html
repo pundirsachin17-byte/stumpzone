@@ -391,6 +391,7 @@ footer{background:#fafafa;border-top:2px solid var(--border);padding:40px 24px 2
 .fseo strong{color:var(--text);font-weight:600;}
 .spin{display:inline-block;width:13px;height:13px;border:2px solid var(--border2);border-top-color:var(--orange);border-radius:50%;animation:spinning .6s linear infinite;}
 @keyframes spinning{to{transform:rotate(360deg)}}
+@keyframes loadBar{0%{transform:translateX(-100%)}50%{transform:translateX(100%)}100%{transform:translateX(200%)}}
 
 @media(max-width:900px){
   .layout{grid-template-columns:1fr;}
@@ -862,23 +863,46 @@ function updateTicker(){
 // ── LOAD ARTICLES FROM BACKEND ─────────────────────────────────
 async function loadArticles(){
   const feed = document.getElementById('home-feed');
-  // Show skeleton
+  
+  // Try cache first (5 minute cache)
+  const cached = localStorage.getItem('sz_articles_cache');
+  const cacheTime = localStorage.getItem('sz_articles_cache_time');
+  const now = Date.now();
+  
+  if(cached && cacheTime && (now - parseInt(cacheTime)) < 300000){ // 5 min = 300000ms
+    try{
+      allArticles = JSON.parse(cached);
+      renderHome();
+      updateTicker();
+      return; // Use cache, no API call needed
+    }catch(e){
+      // Cache corrupt, continue to fetch
+    }
+  }
+  
+  // Show loading state
   feed.innerHTML = `
-    <div class="skel-featured skel">
-      <div class="skel-img"></div>
-      <div class="skel-body" style="padding:18px 20px">
-        <div class="skel-line w30"></div>
-        <div class="skel-line w90" style="height:18px"></div>
-        <div class="skel-line w70"></div>
+    <div style="text-align:center;padding:60px 20px;">
+      <div style="width:200px;height:4px;background:var(--border);border-radius:4px;margin:0 auto 16px;overflow:hidden;">
+        <div style="width:60%;height:100%;background:linear-gradient(90deg,var(--orange),var(--gold));border-radius:4px;animation:loadBar 1.2s ease-in-out infinite;"></div>
       </div>
-    </div>
-    ${[1,2,3].map(()=>`<div class="skel-list-item skel"><div class="skel-thumb"></div><div class="skel-list-body"><div class="skel-line w30" style="height:10px"></div><div class="skel-line w90" style="height:12px"></div><div class="skel-line w50" style="height:10px"></div></div></div>`).join('')}`;
+      <div style="font-family:'Bebas Neue',cursive;font-size:22px;color:var(--text);margin-bottom:6px;">Loading Articles...</div>
+      <div style="font-size:14px;color:var(--muted2);">Fetching latest cricket news</div>
+    </div>`;
 
   try{
     const res = await fetch('/api/articles');
     if(!res.ok) throw new Error('fetch failed');
     const data = await res.json();
     allArticles = Array.isArray(data) ? data : [];
+    
+    // Cache the results
+    try{
+      localStorage.setItem('sz_articles_cache', JSON.stringify(allArticles));
+      localStorage.setItem('sz_articles_cache_time', now.toString());
+    }catch(e){
+      // Cache storage failed (quota), ignore
+    }
   }catch(e){
     allArticles = [];
   }
